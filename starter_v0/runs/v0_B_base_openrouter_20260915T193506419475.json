@@ -1,0 +1,1934 @@
+{
+  "run_id": "v0_B_base_openrouter_20260915T193506419475",
+  "version": "v0",
+  "artifact_version": "v0+p2f2599cda112+t1af32a9b074d",
+  "prompt_hash": "2f2599cda11243947a18e8a0865ea655898bd4f936aa316bf1ac5b0e39912331",
+  "tools_hash": "1af32a9b074da99b4c4873bd242824bb240268532770ca7ba3a35e5af726444b",
+  "phase": "B",
+  "suite": "base",
+  "provider": "openrouter",
+  "model": "openai/gpt-4o-mini",
+  "system_prompt": "A:\\VINAI\\K4-L3B-Day04-DH-Prompt-Engineering-Tool-Calling-Labs\\starter_v0\\artifacts\\system_prompt.md",
+  "tools": "A:\\VINAI\\K4-L3B-Day04-DH-Prompt-Engineering-Tool-Calling-Labs\\starter_v0\\artifacts\\tools.yaml",
+  "eval_cases": "data\\eval_base.json",
+  "dataset_id": "day04_v3_ecommerce_base",
+  "dataset_role": "base",
+  "description": "Base evaluation suite for Smart E-Commerce Customer Support & Refund Assistant.",
+  "generated_at": "2026-09-15T19:35:06",
+  "summary": {
+    "total_cases": 30,
+    "measured_cases": 30,
+    "provider_error_cases": 0,
+    "passed_cases": 30,
+    "case_accuracy": 1.0,
+    "tool_routing_accuracy": 1.0,
+    "argument_accuracy": 1.0,
+    "multiturn_accuracy": 1.0,
+    "failure_counts": {},
+    "observed_mismatch_counts": {}
+  },
+  "results": [
+    {
+      "id": "E01_order_status_routing",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "route_order_status",
+        "difficulty": "easy",
+        "what_it_tests": "Kiem tra don hang qua Order ID."
+      },
+      "input": "Kiểm tra tình trạng vận chuyển của đơn hàng ORD-8801 giúp mình.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "check_order_status",
+            "args": {
+              "order_id": "ORD-8801"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "check_order_status",
+            "args": {
+              "order_id": "ORD-8801"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "check_order_status",
+          "args": {
+            "order_id": "ORD-8801"
+          },
+          "result": {
+            "tool": "check_order_status",
+            "order": {
+              "order_id": "ORD-8801",
+              "customer_id": "CUST-1001",
+              "product_name": "Sony WH-1000XM5 Headphone",
+              "serial_number": "SN-SNY-9921",
+              "status": "delivered",
+              "delivered_date": "2026-09-10",
+              "total_price": 399.0,
+              "carrier": "VNPost",
+              "tracking_number": "VN12345678",
+              "return_eligible": true
+            },
+            "snapshot_at": "2026-09-15T18:00:00Z"
+          }
+        }
+      ]
+    },
+    {
+      "id": "E02_warranty_routing",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "route_warranty",
+        "difficulty": "easy",
+        "what_it_tests": "Kiem tra bao hanh qua Serial Number."
+      },
+      "input": "Kiểm tra tình trạng bảo hành tai nghe serial SN-SNY-9921.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "inspect_product_warranty",
+            "args": {
+              "serial_number": "SN-SNY-9921",
+              "check": "all"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "inspect_product_warranty",
+            "args": {
+              "serial_number": "SN-SNY-9921",
+              "check": "all"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "inspect_product_warranty",
+          "args": {
+            "serial_number": "SN-SNY-9921",
+            "check": "all"
+          },
+          "result": {
+            "tool": "inspect_product_warranty",
+            "serial_number": "SN-SNY-9921",
+            "warranty": {
+              "serial_number": "SN-SNY-9921",
+              "product_name": "Sony WH-1000XM5 Headphone",
+              "order_id": "ORD-8801",
+              "warranty_status": "valid",
+              "expires_at": "2027-09-10",
+              "coverage": "12-month full hardware & ANC sensor warranty",
+              "diagnostics": {
+                "hardware_ok": true,
+                "bluetooth": "intermittent_pairing_defect",
+                "battery_health": "100%"
+              }
+            },
+            "check": "all",
+            "snapshot_at": "2026-09-15T18:00:00Z"
+          }
+        }
+      ]
+    },
+    {
+      "id": "E03_policy_routing",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "route_store_policy",
+        "difficulty": "easy",
+        "what_it_tests": "Tra cuu chinh sach giao hang."
+      },
+      "input": "Cho mình tìm quy định về giao hàng và phí ship của shop.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "search_store_policy",
+            "args": {
+              "category": "shipping"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "search_store_policy",
+            "args": {
+              "query": "giao hàng và phí ship",
+              "category": "shipping"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "search_store_policy",
+          "args": {
+            "query": "giao hàng và phí ship",
+            "category": "shipping"
+          },
+          "result": {
+            "tool": "search_store_policy",
+            "query": "giao hàng và phí ship",
+            "category": "shipping",
+            "results": [
+              {
+                "id": "POL-SHP-03",
+                "category": "shipping",
+                "title": "Chinh sach giao hang va phi ship",
+                "content": "Mien phi giao hang cho don hang tren 500.000 VND. Thoi gian giao hang tieu chuan tu 2-4 ngay."
+              }
+            ],
+            "snapshot_at": "2026-09-15T18:00:00Z"
+          }
+        }
+      ]
+    },
+    {
+      "id": "E04_customer_routing",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "route_customer",
+        "difficulty": "easy",
+        "what_it_tests": "Tra cuu customer_id."
+      },
+      "input": "Tra cứu thông tin tài khoản khách hàng CUST-1001.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup_customer",
+            "args": {
+              "customer_id": "CUST-1001"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "lookup_customer",
+            "args": {
+              "customer_id": "CUST-1001"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "lookup_customer",
+          "args": {
+            "customer_id": "CUST-1001"
+          },
+          "result": {
+            "tool": "lookup_customer",
+            "customer": {
+              "customer_id": "CUST-1001",
+              "name": "Nguyen Van An",
+              "email": "an.nguyen@example.com",
+              "phone": "0901234567",
+              "tier": "VIP",
+              "address": "123 Le Loi, District 1, Ho Chi Minh City",
+              "recent_orders": [
+                "ORD-8801",
+                "ORD-8804"
+              ]
+            },
+            "snapshot_at": "2026-09-15T18:00:00Z"
+          }
+        }
+      ]
+    },
+    {
+      "id": "E05_warranty_check_arg",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "warranty_check_arg",
+        "difficulty": "medium",
+        "what_it_tests": "Check dung check=bluetooth."
+      },
+      "input": "Kiểm tra kết nối bluetooth tai nghe SN-SNY-9921.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "inspect_product_warranty",
+            "args": {
+              "serial_number": "SN-SNY-9921",
+              "check": "bluetooth"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "inspect_product_warranty",
+            "args": {
+              "serial_number": "SN-SNY-9921",
+              "check": "bluetooth"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "inspect_product_warranty",
+          "args": {
+            "serial_number": "SN-SNY-9921",
+            "check": "bluetooth"
+          },
+          "result": {
+            "tool": "inspect_product_warranty",
+            "serial_number": "SN-SNY-9921",
+            "warranty": {
+              "serial_number": "SN-SNY-9921",
+              "product_name": "Sony WH-1000XM5 Headphone",
+              "order_id": "ORD-8801",
+              "warranty_status": "valid",
+              "expires_at": "2027-09-10",
+              "coverage": "12-month full hardware & ANC sensor warranty",
+              "diagnostics": {
+                "hardware_ok": true,
+                "bluetooth": "intermittent_pairing_defect",
+                "battery_health": "100%"
+              }
+            },
+            "check": "bluetooth",
+            "snapshot_at": "2026-09-15T18:00:00Z"
+          }
+        }
+      ]
+    },
+    {
+      "id": "E06_refund_conditions_routing",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "refund_conditions",
+        "difficulty": "medium",
+        "what_it_tests": "Tra cuu dieu kien hoan tien."
+      },
+      "input": "Điều kiện hoàn tiền và thời gian nhận lại tiền qua thẻ ngân hàng là gì?",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "check_refund_conditions",
+            "args": {
+              "policy_area": "refunds"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "check_refund_conditions",
+            "args": {
+              "query": "hoàn tiền qua thẻ ngân hàng",
+              "policy_area": "refunds"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "check_refund_conditions",
+          "args": {
+            "query": "hoàn tiền qua thẻ ngân hàng",
+            "policy_area": "refunds"
+          },
+          "result": {
+            "tool": "check_refund_conditions",
+            "query": "hoàn tiền qua thẻ ngân hàng",
+            "policy_area": "refunds",
+            "results": [
+              {
+                "id": "POL-REF-02",
+                "category": "refunds",
+                "title": "Dieu kien hoan tien",
+                "content": "Hoan tien 100% qua vi hoac the ngan hang trong 3-5 ngay lam viec sau khi kho nhan lai hang va kiem tra hop le."
+              }
+            ],
+            "snapshot_at": "2026-09-15T18:00:00Z"
+          }
+        }
+      ]
+    },
+    {
+      "id": "E07_format_return_summary",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "format_findings",
+        "difficulty": "medium",
+        "what_it_tests": "Format finding co san."
+      },
+      "input": "Trình bày các finding sau thành báo cáo đổi trả tên 'Khuyến mại tai nghe': Tai nghe lỗi bluetooth; Đơn hàng ORD-8801.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "format_return_summary",
+            "args": {
+              "template": "brief",
+              "incident_title": "Khuyến mại tai nghe"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "format_return_summary",
+            "args": {
+              "findings": [
+                {
+                  "label": "Tai nghe lỗi bluetooth",
+                  "detail": "",
+                  "source": "",
+                  "status": ""
+                }
+              ],
+              "template": "brief",
+              "incident_title": "Khuyến mại tai nghe"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "format_return_summary",
+          "args": {
+            "findings": [
+              {
+                "label": "Tai nghe lỗi bluetooth",
+                "detail": "",
+                "source": "",
+                "status": ""
+              }
+            ],
+            "template": "brief",
+            "incident_title": "Khuyến mại tai nghe"
+          },
+          "result": {
+            "tool": "format_return_summary",
+            "title": "Khuyến mại tai nghe",
+            "template": "brief",
+            "report_text": "=== Khuyến mại tai nghe (BRIEF) ===\n- [] Tai nghe lỗi bluetooth: ",
+            "findings_count": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "E08_out_of_scope",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "out_of_scope",
+        "difficulty": "easy",
+        "what_it_tests": "Yeu cau ngoai CSKH e-commerce."
+      },
+      "input": "Thời tiết hôm nay tại Hà Nội thế nào?",
+      "expect": {
+        "no_tool": true,
+        "behavior": "refuse"
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [],
+        "actual_text": "Xin lỗi, nhưng tôi không thể cung cấp thông tin về thời tiết. Tôi có thể giúp bạn với các vấn đề liên quan đến hỗ trợ khách hàng, hoàn tiền hoặc sản phẩm tại Northstar E-Store. Bạn cần giúp gì?",
+        "case_failure_type": "out_of_scope",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": []
+    },
+    {
+      "id": "E09_customer_email_lookup",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "customer_email",
+        "difficulty": "easy",
+        "what_it_tests": "Tra cuu qua email."
+      },
+      "input": "Tra cứu thông tin khách hàng có email an.nguyen@example.com.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup_customer",
+            "args": {
+              "email": "an.nguyen@example.com"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "lookup_customer",
+            "args": {
+              "email": "an.nguyen@example.com"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "lookup_customer",
+          "args": {
+            "email": "an.nguyen@example.com"
+          },
+          "result": {
+            "tool": "lookup_customer",
+            "customer": {
+              "customer_id": "CUST-1001",
+              "name": "Nguyen Van An",
+              "email": "an.nguyen@example.com",
+              "phone": "0901234567",
+              "tier": "VIP",
+              "address": "123 Le Loi, District 1, Ho Chi Minh City",
+              "recent_orders": [
+                "ORD-8801",
+                "ORD-8804"
+              ]
+            },
+            "snapshot_at": "2026-09-15T18:00:00Z"
+          }
+        }
+      ]
+    },
+    {
+      "id": "E10_missing_order_id",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "missing_order_id",
+        "difficulty": "medium",
+        "what_it_tests": "Thieu order_id phai clarify."
+      },
+      "input": "Tôi muốn kiểm tra tình trạng giao hàng của tôi.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify"
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "question": "Vui lòng cung cấp mã đơn hàng của bạn để tôi có thể kiểm tra tình trạng giao hàng.",
+              "response_type": "text"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "missing_info",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "clarify",
+          "args": {
+            "question": "Vui lòng cung cấp mã đơn hàng của bạn để tôi có thể kiểm tra tình trạng giao hàng.",
+            "response_type": "text"
+          },
+          "result": {
+            "tool": "clarify",
+            "question": "Vui lòng cung cấp mã đơn hàng của bạn để tôi có thể kiểm tra tình trạng giao hàng.",
+            "response_type": "text",
+            "options": [],
+            "awaiting_user": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "E11_missing_serial_number",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "missing_serial",
+        "difficulty": "medium",
+        "what_it_tests": "Thieu serial_number phai clarify."
+      },
+      "input": "Kiểm tra giúp tôi chiếc tai nghe này có còn bảo hành không.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify"
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "question": "Bạn vui lòng cung cấp số serial của chiếc tai nghe để tôi có thể kiểm tra tình trạng bảo hành.",
+              "response_type": "text"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "missing_info",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "clarify",
+          "args": {
+            "question": "Bạn vui lòng cung cấp số serial của chiếc tai nghe để tôi có thể kiểm tra tình trạng bảo hành.",
+            "response_type": "text"
+          },
+          "result": {
+            "tool": "clarify",
+            "question": "Bạn vui lòng cung cấp số serial của chiếc tai nghe để tôi có thể kiểm tra tình trạng bảo hành.",
+            "response_type": "text",
+            "options": [],
+            "awaiting_user": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "E12_search_product_specs",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "product_specs",
+        "difficulty": "easy",
+        "what_it_tests": "Tra cuu specs san pham."
+      },
+      "input": "Tra cứu thông số kỹ thuật sản phẩm Sony WH-1000XM5.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "search_product_specs",
+            "args": {
+              "manufacturer": "Sony",
+              "model": "WH-1000XM5",
+              "query_type": "specs"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "search_product_specs",
+            "args": {
+              "manufacturer": "Sony",
+              "model": "WH-1000XM5",
+              "query_type": "specs"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "search_product_specs",
+          "args": {
+            "manufacturer": "Sony",
+            "model": "WH-1000XM5",
+            "query_type": "specs"
+          },
+          "result": {
+            "tool": "search_product_specs",
+            "manufacturer": "Sony",
+            "model": "WH-1000XM5",
+            "query_type": "specs",
+            "results": [
+              {
+                "title": "Sony WH-1000XM5 Official Specifications",
+                "snippet": "Official hardware specs, warranty period, compatibility and user manual for Sony WH-1000XM5.",
+                "url": "https://www.sony.com/support/wh-1000xm5"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "E13_unconfirmed_return_ticket",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "unconfirmed_ticket",
+        "difficulty": "medium",
+        "what_it_tests": "Chua confirmed khong duoc goi create_return_ticket."
+      },
+      "input": "Tôi muốn đổi trả sản phẩm đơn hàng ORD-8801 vì bị lỗi.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify"
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "question": "Bạn có xác nhận muốn yêu cầu đổi trả sản phẩm cho đơn hàng ORD-8801 không?",
+              "response_type": "yes_no"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_boundary",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "clarify",
+          "args": {
+            "question": "Bạn có xác nhận muốn yêu cầu đổi trả sản phẩm cho đơn hàng ORD-8801 không?",
+            "response_type": "yes_no"
+          },
+          "result": {
+            "tool": "clarify",
+            "question": "Bạn có xác nhận muốn yêu cầu đổi trả sản phẩm cho đơn hàng ORD-8801 không?",
+            "response_type": "yes_no",
+            "options": [],
+            "awaiting_user": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "E14_cancel_return_ticket",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "cancel_ticket",
+        "difficulty": "medium",
+        "what_it_tests": "Huy thi dung ngay khong goi tool."
+      },
+      "input": "Thôi mình không muốn tạo ticket đổi trả đơn ORD-8801 nữa, hủy giúp mình.",
+      "expect": {
+        "no_tool": true
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [],
+        "actual_text": "Mình đã hủy yêu cầu tạo ticket đổi trả cho đơn ORD-8801. Nếu bạn cần hỗ trợ gì khác, hãy cho mình biết nhé!",
+        "case_failure_type": "wrong_boundary",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": []
+    },
+    {
+      "id": "E15_confirmed_return_ticket",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "confirmed_ticket",
+        "difficulty": "medium",
+        "what_it_tests": "Dong y confirmed=true thi tao ticket."
+      },
+      "input": "Mình đồng ý tạo ticket đổi trả đơn ORD-8801 do sản phẩm lỗi bluetooth.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "create_return_ticket",
+            "args": {
+              "order_id": "ORD-8801",
+              "confirmed": true
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "create_return_ticket",
+            "args": {
+              "summary": "Sản phẩm lỗi bluetooth",
+              "priority": "medium",
+              "order_id": "ORD-8801",
+              "confirmed": true
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_boundary",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "create_return_ticket",
+          "args": {
+            "summary": "Sản phẩm lỗi bluetooth",
+            "priority": "medium",
+            "order_id": "ORD-8801",
+            "confirmed": true
+          },
+          "result": {
+            "tool": "create_return_ticket",
+            "ticket_id": "RET-6F0CC8",
+            "order_id": "ORD-8801",
+            "summary": "Sản phẩm lỗi bluetooth",
+            "priority": "medium",
+            "status": "created",
+            "message": "Return ticket RET-6F0CC8 created successfully."
+          }
+        }
+      ]
+    },
+    {
+      "id": "E16_return_policy_search",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "return_policy",
+        "difficulty": "easy",
+        "what_it_tests": "Chinh sach thoi han doi tra."
+      },
+      "input": "Thời hạn đổi trả hàng là bao nhiêu ngày?",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "search_store_policy",
+            "args": {
+              "category": "returns"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "search_store_policy",
+            "args": {
+              "query": "thời hạn đổi trả hàng",
+              "category": "returns"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "search_store_policy",
+          "args": {
+            "query": "thời hạn đổi trả hàng",
+            "category": "returns"
+          },
+          "result": {
+            "tool": "search_store_policy",
+            "query": "thời hạn đổi trả hàng",
+            "category": "returns",
+            "results": [
+              {
+                "id": "POL-RET-01",
+                "category": "returns",
+                "title": "Chinh sach doi tra trong 14 ngay",
+                "content": "Khach hang duoc doi tra san pham mien phi trong vong 14 ngay ke tu ngay nhan hang neu san pham con nguyen tem hoac bi loi phan cung tu nha san xuat."
+              }
+            ],
+            "snapshot_at": "2026-09-15T18:00:00Z"
+          }
+        }
+      ]
+    },
+    {
+      "id": "E17_out_of_scope_coding",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "out_of_scope",
+        "difficulty": "easy",
+        "what_it_tests": "Lap trinh ngoai CSKH."
+      },
+      "input": "Viết giúp tôi một hàm Python sắp xếp mảng.",
+      "expect": {
+        "no_tool": true,
+        "behavior": "refuse"
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [],
+        "actual_text": "Xin lỗi, nhưng tôi không thể giúp bạn với yêu cầu lập trình. Tuy nhiên, tôi có thể hỗ trợ bạn với các vấn đề liên quan đến dịch vụ khách hàng, hoàn tiền hoặc thông tin sản phẩm tại Northstar E-Store. Nếu bạn có câu hỏi nào trong những lĩnh vực đó, hãy cho tôi biết!",
+        "case_failure_type": "out_of_scope",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": []
+    },
+    {
+      "id": "E18_order_status_transit",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "order_transit",
+        "difficulty": "easy",
+        "what_it_tests": "Kiem tra don transit."
+      },
+      "input": "Đơn hàng ORD-8802 đã đến đâu rồi?",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "check_order_status",
+            "args": {
+              "order_id": "ORD-8802"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "check_order_status",
+            "args": {
+              "order_id": "ORD-8802"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "check_order_status",
+          "args": {
+            "order_id": "ORD-8802"
+          },
+          "result": {
+            "tool": "check_order_status",
+            "order": {
+              "order_id": "ORD-8802",
+              "customer_id": "CUST-1002",
+              "product_name": "Logitech MX Master 3S Mouse",
+              "serial_number": "SN-LOG-3312",
+              "status": "in_transit",
+              "estimated_delivery": "2026-09-17",
+              "total_price": 99.0,
+              "carrier": "GHN",
+              "tracking_number": "GHN998877",
+              "return_eligible": false
+            },
+            "snapshot_at": "2026-09-15T18:00:00Z"
+          }
+        }
+      ]
+    },
+    {
+      "id": "E19_customer_id_lookup",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "customer_tier",
+        "difficulty": "easy",
+        "what_it_tests": "Hang VIP cua customer."
+      },
+      "input": "Xem điểm thưởng và hạng tài khoản CUST-1002.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup_customer",
+            "args": {
+              "customer_id": "CUST-1002"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "lookup_customer",
+            "args": {
+              "customer_id": "CUST-1002"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "lookup_customer",
+          "args": {
+            "customer_id": "CUST-1002"
+          },
+          "result": {
+            "tool": "lookup_customer",
+            "customer": {
+              "customer_id": "CUST-1002",
+              "name": "Tran Thi Bich",
+              "email": "bich.tran@example.com",
+              "phone": "0918765432",
+              "tier": "Gold",
+              "address": "456 Nguyen Hue, District 1, Ho Chi Minh City",
+              "recent_orders": [
+                "ORD-8802"
+              ]
+            },
+            "snapshot_at": "2026-09-15T18:00:00Z"
+          }
+        }
+      ]
+    },
+    {
+      "id": "E20_voucher_policy_search",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "voucher_policy",
+        "difficulty": "easy",
+        "what_it_tests": "Chinh sach voucher den bu."
+      },
+      "input": "Shop có chính sách đền bù khi giao hàng chậm không?",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "search_store_policy",
+            "args": {
+              "category": "vouchers"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "search_store_policy",
+            "args": {
+              "query": "đền bù khi giao hàng chậm",
+              "category": "vouchers"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "search_store_policy",
+          "args": {
+            "query": "đền bù khi giao hàng chậm",
+            "category": "vouchers"
+          },
+          "result": {
+            "tool": "search_store_policy",
+            "query": "đền bù khi giao hàng chậm",
+            "category": "vouchers",
+            "results": [
+              {
+                "id": "POL-VOU-04",
+                "category": "vouchers",
+                "title": "Voucher den bu giao hang cham va loi nho",
+                "content": "Don hang bi giao tre tren 2 ngay hoac vo hop ngoai se duoc cap tu dong Voucher den bu tri gia 50.000 VND - 200.000 VND hoac hoan 10% gia tri don hang."
+              }
+            ],
+            "snapshot_at": "2026-09-15T18:00:00Z"
+          }
+        }
+      ]
+    },
+    {
+      "id": "E21_multiturn_clarify_order",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_order",
+        "difficulty": "medium",
+        "what_it_tests": "Nhan Order ID o luot 2 de goi tool."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tôi muốn kiểm tra tình trạng đơn hàng của tôi."
+        },
+        {
+          "role": "assistant",
+          "content": "Bạn cho mình xin mã đơn hàng (Order ID) nhé?"
+        },
+        {
+          "role": "user",
+          "content": "Mã đơn hàng của mình là ORD-8801."
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "check_order_status",
+            "args": {
+              "order_id": "ORD-8801"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "check_order_status",
+            "args": {
+              "order_id": "ORD-8801"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "missing_info",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "check_order_status",
+          "args": {
+            "order_id": "ORD-8801"
+          },
+          "result": {
+            "tool": "check_order_status",
+            "order": {
+              "order_id": "ORD-8801",
+              "customer_id": "CUST-1001",
+              "product_name": "Sony WH-1000XM5 Headphone",
+              "serial_number": "SN-SNY-9921",
+              "status": "delivered",
+              "delivered_date": "2026-09-10",
+              "total_price": 399.0,
+              "carrier": "VNPost",
+              "tracking_number": "VN12345678",
+              "return_eligible": true
+            },
+            "snapshot_at": "2026-09-15T18:00:00Z"
+          }
+        }
+      ]
+    },
+    {
+      "id": "E22_multiturn_clarify_serial",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_serial",
+        "difficulty": "medium",
+        "what_it_tests": "Nhan serial number o luot 2."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tai nghe của tôi bị hỏng, kiểm tra bảo hành giúp tôi."
+        },
+        {
+          "role": "assistant",
+          "content": "Bạn cung cấp mã serial number của sản phẩm nhé?"
+        },
+        {
+          "role": "user",
+          "content": "Serial number là SN-SNY-9921."
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "inspect_product_warranty",
+            "args": {
+              "serial_number": "SN-SNY-9921"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "inspect_product_warranty",
+            "args": {
+              "serial_number": "SN-SNY-9921",
+              "check": "all"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "missing_info",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "inspect_product_warranty",
+          "args": {
+            "serial_number": "SN-SNY-9921",
+            "check": "all"
+          },
+          "result": {
+            "tool": "inspect_product_warranty",
+            "serial_number": "SN-SNY-9921",
+            "warranty": {
+              "serial_number": "SN-SNY-9921",
+              "product_name": "Sony WH-1000XM5 Headphone",
+              "order_id": "ORD-8801",
+              "warranty_status": "valid",
+              "expires_at": "2027-09-10",
+              "coverage": "12-month full hardware & ANC sensor warranty",
+              "diagnostics": {
+                "hardware_ok": true,
+                "bluetooth": "intermittent_pairing_defect",
+                "battery_health": "100%"
+              }
+            },
+            "check": "all",
+            "snapshot_at": "2026-09-15T18:00:00Z"
+          }
+        }
+      ]
+    },
+    {
+      "id": "E23_multiturn_confirm_ticket",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_confirm",
+        "difficulty": "medium",
+        "what_it_tests": "Xac nhan o luot 2 de tao ticket."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tôi muốn đổi trả đơn hàng ORD-8801."
+        },
+        {
+          "role": "assistant",
+          "content": "Bạn có chắc chắn muốn tạo ticket yêu cầu đổi trả đơn ORD-8801 không?"
+        },
+        {
+          "role": "user",
+          "content": "Đúng vậy, tôi đồng ý tạo ticket."
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "create_return_ticket",
+            "args": {
+              "order_id": "ORD-8801",
+              "confirmed": true
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "create_return_ticket",
+            "args": {
+              "summary": "Yêu cầu đổi trả cho đơn hàng ORD-8801.",
+              "order_id": "ORD-8801",
+              "confirmed": true
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_boundary",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "create_return_ticket",
+          "args": {
+            "summary": "Yêu cầu đổi trả cho đơn hàng ORD-8801.",
+            "order_id": "ORD-8801",
+            "confirmed": true
+          },
+          "result": {
+            "tool": "create_return_ticket",
+            "ticket_id": "RET-90F43E",
+            "order_id": "ORD-8801",
+            "summary": "Yêu cầu đổi trả cho đơn hàng ORD-8801.",
+            "priority": "medium",
+            "status": "created",
+            "message": "Return ticket RET-90F43E created successfully."
+          }
+        }
+      ]
+    },
+    {
+      "id": "E24_multiturn_cancel_ticket",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_cancel",
+        "difficulty": "medium",
+        "what_it_tests": "Huy o luot 2 khong goi ticket tool."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tạo ticket đổi trả đơn ORD-8801 giúp mình."
+        },
+        {
+          "role": "assistant",
+          "content": "Bạn xác nhận tạo ticket đổi trả cho đơn ORD-8801 chứ?"
+        },
+        {
+          "role": "user",
+          "content": "À thôi, giữ lại dùng cũng được, đừng tạo nữa nhé."
+        }
+      ],
+      "expect": {
+        "no_tool": true
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [],
+        "actual_text": "Không vấn đề gì! Nếu bạn cần hỗ trợ gì khác, hãy cho tôi biết nhé.",
+        "case_failure_type": "wrong_boundary",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": []
+    },
+    {
+      "id": "E25_multiturn_specs_followup",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_specs",
+        "difficulty": "medium",
+        "what_it_tests": "Dung ngu canh luot truoc de tra cuu specs."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Đơn ORD-8801 của mình gồm tai nghe Sony WH-1000XM5."
+        },
+        {
+          "role": "assistant",
+          "content": "Đã ghi nhận sản phẩm Sony WH-1000XM5."
+        },
+        {
+          "role": "user",
+          "content": "Tra cứu thông số kỹ thuật của mẫu tai nghe này giúp mình."
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "search_product_specs",
+            "args": {
+              "manufacturer": "Sony",
+              "model": "WH-1000XM5",
+              "query_type": "specs"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "search_product_specs",
+            "args": {
+              "manufacturer": "Sony",
+              "model": "WH-1000XM5",
+              "query_type": "specs"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "search_product_specs",
+          "args": {
+            "manufacturer": "Sony",
+            "model": "WH-1000XM5",
+            "query_type": "specs"
+          },
+          "result": {
+            "tool": "search_product_specs",
+            "manufacturer": "Sony",
+            "model": "WH-1000XM5",
+            "query_type": "specs",
+            "results": [
+              {
+                "title": "Sony WH-1000XM5 Official Specifications",
+                "snippet": "Official hardware specs, warranty period, compatibility and user manual for Sony WH-1000XM5.",
+                "url": "https://www.sony.com/support/wh-1000xm5"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "E26_multiturn_customer_lookup",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_customer",
+        "difficulty": "medium",
+        "what_it_tests": "Nhan email o luot 2."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tôi muốn kiểm tra tài khoản của mình."
+        },
+        {
+          "role": "assistant",
+          "content": "Bạn cho tôi xin Email hoặc Mã khách hàng nhé?"
+        },
+        {
+          "role": "user",
+          "content": "Email của tôi là bich.tran@example.com."
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup_customer",
+            "args": {
+              "email": "bich.tran@example.com"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "lookup_customer",
+            "args": {
+              "email": "bich.tran@example.com"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "missing_info",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "lookup_customer",
+          "args": {
+            "email": "bich.tran@example.com"
+          },
+          "result": {
+            "tool": "lookup_customer",
+            "customer": {
+              "customer_id": "CUST-1002",
+              "name": "Tran Thi Bich",
+              "email": "bich.tran@example.com",
+              "phone": "0918765432",
+              "tier": "Gold",
+              "address": "456 Nguyen Hue, District 1, Ho Chi Minh City",
+              "recent_orders": [
+                "ORD-8802"
+              ]
+            },
+            "snapshot_at": "2026-09-15T18:00:00Z"
+          }
+        }
+      ]
+    },
+    {
+      "id": "E27_multiturn_refund_conditions",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_refund",
+        "difficulty": "medium",
+        "what_it_tests": "Goi refund conditions o luot 2."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Sản phẩm bị trầy xước nhẹ có được hoàn tiền không?"
+        },
+        {
+          "role": "assistant",
+          "content": "Để kiểm tra điều kiện hoàn tiền, bạn cần tham khảo chính sách của shop."
+        },
+        {
+          "role": "user",
+          "content": "Tra cứu giúp mình điều kiện hoàn tiền cụ thể."
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "check_refund_conditions",
+            "args": {
+              "policy_area": "refunds"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "check_refund_conditions",
+            "args": {
+              "query": "sản phẩm bị trầy xước nhẹ",
+              "policy_area": "refunds"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "check_refund_conditions",
+          "args": {
+            "query": "sản phẩm bị trầy xước nhẹ",
+            "policy_area": "refunds"
+          },
+          "result": {
+            "tool": "check_refund_conditions",
+            "query": "sản phẩm bị trầy xước nhẹ",
+            "policy_area": "refunds",
+            "results": [
+              {
+                "id": "POL-REF-02",
+                "category": "refunds",
+                "title": "Dieu kien hoan tien",
+                "content": "Hoan tien 100% qua vi hoac the ngan hang trong 3-5 ngay lam viec sau khi kho nhan lai hang va kiem tra hop le."
+              }
+            ],
+            "snapshot_at": "2026-09-15T18:00:00Z"
+          }
+        }
+      ]
+    },
+    {
+      "id": "E28_multiturn_order_tracking",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_tracking",
+        "difficulty": "medium",
+        "what_it_tests": "Re-check status don hang."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Đơn hàng ORD-8803 bao giờ giao tới?"
+        },
+        {
+          "role": "assistant",
+          "content": "Đơn hàng ORD-8803 đang được xử lý."
+        },
+        {
+          "role": "user",
+          "content": "Kiểm tra lại trạng thái chi tiết của đơn ORD-8803 giúp mình."
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "check_order_status",
+            "args": {
+              "order_id": "ORD-8803"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "check_order_status",
+            "args": {
+              "order_id": "ORD-8803"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "check_order_status",
+          "args": {
+            "order_id": "ORD-8803"
+          },
+          "result": {
+            "tool": "check_order_status",
+            "order": {
+              "order_id": "ORD-8803",
+              "customer_id": "CUST-1003",
+              "product_name": "Dell UltraSharp U2723QE Monitor",
+              "serial_number": "SN-DEL-7700",
+              "status": "processing",
+              "estimated_delivery": "2026-09-18",
+              "total_price": 620.0,
+              "carrier": "GHTK",
+              "tracking_number": "GHTK554433",
+              "return_eligible": false
+            },
+            "snapshot_at": "2026-09-15T18:00:00Z"
+          }
+        }
+      ]
+    },
+    {
+      "id": "E29_multiturn_warranty_hardware",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_warranty",
+        "difficulty": "medium",
+        "what_it_tests": "Serial tu luot 1 + check=hardware tu luot 2."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tôi có mã serial SN-LOG-3312."
+        },
+        {
+          "role": "assistant",
+          "content": "Đã ghi nhận serial SN-LOG-3312."
+        },
+        {
+          "role": "user",
+          "content": "Kiểm tra phần cứng thiết bị này xem còn hạn bảo hành không."
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "inspect_product_warranty",
+            "args": {
+              "serial_number": "SN-LOG-3312",
+              "check": "hardware"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "inspect_product_warranty",
+            "args": {
+              "serial_number": "SN-LOG-3312",
+              "check": "hardware"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "inspect_product_warranty",
+          "args": {
+            "serial_number": "SN-LOG-3312",
+            "check": "hardware"
+          },
+          "result": {
+            "tool": "inspect_product_warranty",
+            "serial_number": "SN-LOG-3312",
+            "warranty": {
+              "serial_number": "SN-LOG-3312",
+              "product_name": "Logitech MX Master 3S Mouse",
+              "order_id": "ORD-8802",
+              "warranty_status": "valid",
+              "expires_at": "2027-03-15",
+              "coverage": "12-month peripheral warranty",
+              "diagnostics": {
+                "hardware_ok": true,
+                "sensor": "normal"
+              }
+            },
+            "check": "hardware",
+            "snapshot_at": "2026-09-15T18:00:00Z"
+          }
+        }
+      ]
+    },
+    {
+      "id": "E30_multiturn_out_of_scope",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_out_of_scope",
+        "difficulty": "easy",
+        "what_it_tests": "Toan hoc ngoai pham vi."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Chào bạn, mình cần hỗ trợ."
+        },
+        {
+          "role": "assistant",
+          "content": "Chào bạn, mình có thể giúp gì về đơn hàng hay bảo hành?"
+        },
+        {
+          "role": "user",
+          "content": "Bạn giải bài toán tích phân này giúp mình với."
+        }
+      ],
+      "expect": {
+        "no_tool": true,
+        "behavior": "refuse"
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [],
+        "actual_text": "Xin lỗi, nhưng mình không thể giúp bạn với bài toán tích phân. Mình chỉ có thể hỗ trợ về các vấn đề liên quan đến đơn hàng, bảo hành, và các chính sách của cửa hàng. Nếu bạn có câu hỏi nào trong những lĩnh vực đó, hãy cho mình biết!",
+        "case_failure_type": "out_of_scope",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": []
+    }
+  ]
+}
