@@ -562,26 +562,44 @@ HTML_CONTENT = """<!DOCTYPE html>
             display: flex;
             gap: 8px;
             overflow-x: auto;
-            padding: 8px 0;
+            padding: 8px 4px 14px 4px;
             margin-bottom: 8px;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(56, 189, 248, 0.4) transparent;
+        }
+
+        .suggestions::-webkit-scrollbar {
+            height: 4px;
+        }
+
+        .suggestions::-webkit-scrollbar-thumb {
+            background: rgba(56, 189, 248, 0.4);
+            border-radius: 4px;
         }
 
         .chip {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.08);
             border: 1px solid var(--panel-border);
-            color: var(--text-muted);
-            padding: 6px 14px;
+            color: var(--text-main);
+            padding: 8px 16px;
             border-radius: 20px;
-            font-size: 12.5px;
+            font-size: 13px;
             white-space: nowrap;
             cursor: pointer;
-            transition: all 0.2s;
+            user-select: none;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
         }
 
         .chip:hover {
-            background: rgba(56, 189, 248, 0.1);
-            color: var(--accent-blue);
-            border-color: rgba(56, 189, 248, 0.3);
+            background: rgba(56, 189, 248, 0.25);
+            color: #ffffff;
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+        }
+
+        .chip:active {
+            transform: scale(0.95);
         }
 
         /* Input Bar */
