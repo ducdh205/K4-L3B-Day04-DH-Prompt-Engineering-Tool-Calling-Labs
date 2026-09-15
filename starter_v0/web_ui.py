@@ -131,6 +131,96 @@ def run_mock_engine(user_message: str, history: list[dict[str, Any]], version: s
     return "Mình có thể giúp bạn kiểm tra đơn hàng, bảo hành hoặc chính sách đổi trả!", []
 
 
+def synthesize_response(tool_results: list[dict[str, Any]], default_reply: str, version: str) -> str:
+    """Synthesizes clear natural language response from tool execution outputs."""
+    if not tool_results:
+        return default_reply or "Mình có thể giúp bạn kiểm tra đơn hàng, bảo hành hoặc chính sách đổi trả!"
+    
+    parts = []
+    for tr in tool_results:
+        tool_name = tr.get("tool")
+        res = tr.get("result", {})
+        
+        if tool_name == "check_order_status":
+            order = res.get("order")
+            if order:
+                parts.append(
+                    f"Đơn hàng **{order.get('order_id')}** ({order.get('product_name')}) "
+                    f"đã được giao thành công (**{order.get('status')}**) vào ngày **{order.get('delivered_date')}** "
+                    f"qua đơn vị vận chuyển **{order.get('carrier')}** (Mã vận đơn: **{order.get('tracking_number')}**)."
+                )
+            elif "error" in res:
+                parts.append(f"Không tìm thấy thông tin đơn hàng ({res.get('message')}).")
+                
+        elif tool_name == "inspect_product_warranty":
+            w = res.get("warranty")
+            if w:
+                diag = w.get("diagnostics", {})
+                bt_status = diag.get("bluetooth", "ok")
+                bt_info = f", Lỗi Bluetooth: `{bt_status}`" if bt_status != "ok" else ""
+                parts.append(
+                    f"Sản phẩm **{w.get('product_name')}** (Serial: **{w.get('serial_number')}**) "
+                    f"hiện có hạn bảo hành đến **{w.get('expires_at')}** (Trạng thái: **{w.get('warranty_status')}**{bt_info})."
+                )
+            elif "error" in res:
+                parts.append("Không tìm thấy thông tin bảo hành cho mã serial này.")
+                
+        elif tool_name == "lookup_customer":
+            cust = res.get("customer")
+            if cust:
+                parts.append(
+                    f"Thông tin tài khoản khách hàng **{cust.get('name')}** (ID: **{cust.get('customer_id')}**): "
+                    f"Email: {cust.get('email')}, Hạng tài khoản: **{cust.get('tier')}**, Điểm tích lũy: {cust.get('points')} điểm."
+                )
+            elif "error" in res:
+                parts.append("Không tìm thấy thông tin khách hàng.")
+                
+        elif tool_name == "search_store_policy":
+            results = res.get("results", [])
+            if results:
+                p_text = " | ".join([f"**{item.get('title')}**: {item.get('content')}" for item in results])
+                parts.append(f"Chính sách shop: {p_text}")
+            else:
+                parts.append("Đã tra cứu chính sách cửa hàng.")
+
+        elif tool_name == "check_refund_conditions":
+            results = res.get("results", [])
+            if results:
+                p_text = " | ".join([f"**{item.get('title')}**: {item.get('content')}" for item in results])
+                parts.append(f"Điều kiện hoàn tiền: {p_text}")
+            else:
+                parts.append("Đã tra cứu điều kiện hoàn tiền.")
+                
+        elif tool_name == "search_product_specs":
+            specs = res.get("specs")
+            if specs:
+                parts.append(f"Thông số kỹ thuật {specs.get('manufacturer')} {specs.get('model')}: {specs.get('summary')}")
+            else:
+                parts.append("Đã tra cứu thông số kỹ thuật sản phẩm.")
+
+        elif tool_name == "create_return_ticket":
+            if res.get("status") == "created":
+                parts.append(f"Đã khởi tạo thành công Ticket đổi trả **{res.get('ticket_id')}** cho đơn hàng **{res.get('order_id')}**.")
+            elif res.get("status") == "unconfirmed_warning":
+                parts.append("Cần sự xác nhận của khách hàng trước khi tạo ticket đổi trả.")
+            else:
+                parts.append(default_reply or "Yêu cầu đổi trả đã được ghi nhận.")
+
+        elif tool_name == "auto_generate_compensation_voucher":
+            if res.get("status") == "issued":
+                parts.append(f"Đã phát hành thành công Voucher đền bù **{res.get('voucher_code')}** trị giá **${res.get('amount_usd')}** cho đơn hàng **{res.get('order_id')}**!")
+            else:
+                parts.append(default_reply or "Cần sự xác nhận trước khi phát hành voucher đền bù.")
+
+        elif tool_name == "clarify":
+            q = tr.get("args", {}).get("question") or default_reply
+            parts.append(q)
+
+    if parts:
+        return "\n\n".join(parts)
+    return default_reply or "Đã xử lý xong yêu cầu của bạn."
+
+
 def process_chat(payload: dict[str, Any]) -> dict[str, Any]:
     user_msg = payload.get("message", "").strip()
     history = payload.get("history", [])
@@ -177,12 +267,18 @@ def process_chat(payload: dict[str, Any]) -> dict[str, Any]:
             res = {"tool": t_name, "error": "unknown_tool"}
         tool_results.append({"tool": t_name, "args": t_args, "result": res})
 
+    # Synthesize informative natural language reply from tool execution results
+    if tool_results:
+        final_reply = synthesize_response(tool_results, reply_text, version)
+    else:
+        final_reply = reply_text or "Mình có thể giúp bạn kiểm tra đơn hàng, bảo hành hoặc chính sách đổi trả!"
+
     version_info = get_version_info()
     turn_record = {
         "version": version,
         "timestamp": version,
         "user_message": user_msg,
-        "reply": reply_text,
+        "reply": final_reply,
         "tool_calls": tool_calls_data,
         "tool_results": tool_results,
         "used_live_provider": used_live
@@ -190,7 +286,7 @@ def process_chat(payload: dict[str, Any]) -> dict[str, Any]:
     append_transcript(turn_record)
     
     return {
-        "reply": reply_text,
+        "reply": final_reply,
         "tool_calls": tool_calls_data,
         "tool_results": tool_results,
         "version": version,
