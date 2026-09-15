@@ -802,12 +802,16 @@ HTML_CONTENT = """<!DOCTYPE html>
         }
 
         async function sendMessage() {
-            const text = userInput.value.trim();
+            const inputEl = document.getElementById('user-input');
+            if (!inputEl) return;
+            const text = inputEl.value.trim();
             if (!text) return;
 
-            const currentVer = versionSelect.value;
+            const versionEl = document.getElementById('version-select');
+            const currentVer = (versionEl && versionEl.value) ? versionEl.value : 'v3';
+
             appendUserMessage(text);
-            userInput.value = '';
+            inputEl.value = '';
 
             chatHistory.push({ role: 'user', content: text });
 
@@ -820,14 +824,18 @@ HTML_CONTENT = """<!DOCTYPE html>
                 const data = await response.json();
                 appendAssistantMessage(data);
 
-                chatHistory.push({ role: 'assistant', content: data.reply });
+                chatHistory.push({ role: 'assistant', content: data.reply || '' });
             } catch (err) {
+                console.error('Chat error:', err);
                 appendAssistantMessage({ reply: 'Có lỗi kết nối tới server UI backend!', tool_calls: [] });
             }
         }
 
         function sendQuick(text) {
-            userInput.value = text;
+            const inputEl = document.getElementById('user-input');
+            if (inputEl) {
+                inputEl.value = text;
+            }
             sendMessage();
         }
 
