@@ -132,7 +132,7 @@ def run_mock_engine(user_message: str, history: list[dict[str, Any]], version: s
 
 
 def synthesize_response(tool_results: list[dict[str, Any]], default_reply: str, version: str) -> str:
-    """Synthesizes clear natural language response from tool execution outputs."""
+    """Synthesizes clear natural language response with proper accented Vietnamese from tool execution outputs."""
     if not tool_results:
         return default_reply or "Mình có thể giúp bạn kiểm tra đơn hàng, bảo hành hoặc chính sách đổi trả!"
     
@@ -144,9 +144,17 @@ def synthesize_response(tool_results: list[dict[str, Any]], default_reply: str, 
         if tool_name == "check_order_status":
             order = res.get("order")
             if order:
+                status_map = {
+                    "delivered": "Đã giao hàng thành công",
+                    "in_transit": "Đang trên đường vận chuyển",
+                    "processing": "Đang chuẩn bị hàng tại kho",
+                    "cancelled": "Đã hủy đơn"
+                }
+                st_text = status_map.get(order.get('status'), order.get('status'))
+                date_text = order.get('delivered_date') or order.get('estimated_delivery') or 'N/A'
                 parts.append(
                     f"Đơn hàng **{order.get('order_id')}** ({order.get('product_name')}) "
-                    f"đã được giao thành công (**{order.get('status')}**) vào ngày **{order.get('delivered_date')}** "
+                    f"hiện có trạng thái: **{st_text}** (Ngày nhận/Dự kiến: **{date_text}**) "
                     f"qua đơn vị vận chuyển **{order.get('carrier')}** (Mã vận đơn: **{order.get('tracking_number')}**)."
                 )
             elif "error" in res:
@@ -157,10 +165,12 @@ def synthesize_response(tool_results: list[dict[str, Any]], default_reply: str, 
             if w:
                 diag = w.get("diagnostics", {})
                 bt_status = diag.get("bluetooth", "ok")
-                bt_info = f", Lỗi Bluetooth: `{bt_status}`" if bt_status != "ok" else ""
+                bt_map = {"intermittent_pairing_defect": "Lỗi chập chờn kết nối Bluetooth", "ok": "Hoạt động bình thường"}
+                bt_text = f", Kết quả chẩn đoán: **{bt_map.get(bt_status, bt_status)}**" if bt_status != "ok" else ""
+                w_status = "Còn hạn bảo hành chính hãng" if w.get("warranty_status") == "valid" else "Đã hết hạn bảo hành"
                 parts.append(
-                    f"Sản phẩm **{w.get('product_name')}** (Serial: **{w.get('serial_number')}**) "
-                    f"hiện có hạn bảo hành đến **{w.get('expires_at')}** (Trạng thái: **{w.get('warranty_status')}**{bt_info})."
+                    f"Sản phẩm **{w.get('product_name')}** (Mã serial: **{w.get('serial_number')}**) "
+                    f"hiện: **{w_status}** đến ngày **{w.get('expires_at')}** (Gói bảo hành: {w.get('coverage')}{bt_text})."
                 )
             elif "error" in res:
                 parts.append("Không tìm thấy thông tin bảo hành cho mã serial này.")
@@ -169,8 +179,8 @@ def synthesize_response(tool_results: list[dict[str, Any]], default_reply: str, 
             cust = res.get("customer")
             if cust:
                 parts.append(
-                    f"Thông tin tài khoản khách hàng **{cust.get('name')}** (ID: **{cust.get('customer_id')}**): "
-                    f"Email: {cust.get('email')}, Hạng tài khoản: **{cust.get('tier')}**, Điểm tích lũy: {cust.get('points')} điểm."
+                    f"Thông tin tài khoản khách hàng **{cust.get('name')}** (Mã KH: **{cust.get('customer_id')}**): "
+                    f"Email: {cust.get('email')}, Hạng tài khoản: **{cust.get('tier')}**, Điểm thưởng tích lũy: **{cust.get('points')} điểm**."
                 )
             elif "error" in res:
                 parts.append("Không tìm thấy thông tin khách hàng.")
@@ -178,16 +188,16 @@ def synthesize_response(tool_results: list[dict[str, Any]], default_reply: str, 
         elif tool_name == "search_store_policy":
             results = res.get("results", [])
             if results:
-                p_text = " | ".join([f"**{item.get('title')}**: {item.get('content')}" for item in results])
-                parts.append(f"Chính sách shop: {p_text}")
+                p_text = " \n- ".join([f"**{item.get('title')}**: {item.get('content')}" for item in results])
+                parts.append(f"Chính sách cửa hàng:\n- {p_text}")
             else:
                 parts.append("Đã tra cứu chính sách cửa hàng.")
 
         elif tool_name == "check_refund_conditions":
             results = res.get("results", [])
             if results:
-                p_text = " | ".join([f"**{item.get('title')}**: {item.get('content')}" for item in results])
-                parts.append(f"Điều kiện hoàn tiền: {p_text}")
+                p_text = " \n- ".join([f"**{item.get('title')}**: {item.get('content')}" for item in results])
+                parts.append(f"Điều kiện hoàn tiền:\n- {p_text}")
             else:
                 parts.append("Đã tra cứu điều kiện hoàn tiền.")
                 
@@ -200,7 +210,7 @@ def synthesize_response(tool_results: list[dict[str, Any]], default_reply: str, 
 
         elif tool_name == "create_return_ticket":
             if res.get("status") == "created":
-                parts.append(f"Đã khởi tạo thành công Ticket đổi trả **{res.get('ticket_id')}** cho đơn hàng **{res.get('order_id')}**.")
+                parts.append(f"Đã khởi tạo thành công Ticket yêu cầu đổi trả **{res.get('ticket_id')}** cho đơn hàng **{res.get('order_id')}**.")
             elif res.get("status") == "unconfirmed_warning":
                 parts.append("Cần sự xác nhận của khách hàng trước khi tạo ticket đổi trả.")
             else:
@@ -210,7 +220,7 @@ def synthesize_response(tool_results: list[dict[str, Any]], default_reply: str, 
             if res.get("status") == "issued":
                 parts.append(f"Đã phát hành thành công Voucher đền bù **{res.get('voucher_code')}** trị giá **${res.get('amount_usd')}** cho đơn hàng **{res.get('order_id')}**!")
             else:
-                parts.append(default_reply or "Cần sự xác nhận trước khi phát hành voucher đền bù.")
+                parts.append(default_reply or "Cần sự xác nhận từ khách hàng trước khi phát hành voucher đền bù.")
 
         elif tool_name == "clarify":
             q = tr.get("args", {}).get("question") or default_reply
@@ -778,9 +788,9 @@ HTML_CONTENT = """<!DOCTYPE html>
         function formatMarkdown(text) {
             if (!text) return '';
             let html = escapeHtml(text);
-            html = html.replace(/\*\*(.*?)\*\*/g, '<strong style="color: #38bdf8; font-weight: 600;">$1</strong>');
+            html = html.replace(/\\*\\*(.*?)\\*\\*/g, '<strong style="color: #38bdf8; font-weight: 600;">$1</strong>');
             html = html.replace(/`([^`]+)`/g, '<code style="background:rgba(255,255,255,0.1);padding:2px 6px;border-radius:4px;font-family:monospace;color:#34d399;">$1</code>');
-            html = html.replace(/\n/g, '<br>');
+            html = html.replace(/\\n/g, '<br>');
             return html;
         }
 

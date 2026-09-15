@@ -4,26 +4,26 @@
     {
       "id": "POL-RET-01",
       "category": "returns",
-      "title": "Chinh sach doi tra trong 14 ngay",
-      "content": "Khach hang duoc doi tra san pham mien phi trong vong 14 ngay ke tu ngay nhan hang neu san pham con nguyen tem hoac bi loi phan cung tu nha san xuat."
+      "title": "Chính sách đổi trả trong 14 ngày",
+      "content": "Khách hàng được đổi trả sản phẩm miễn phí trong vòng 14 ngày kể từ ngày nhận hàng nếu sản phẩm còn nguyên tem hoặc bị lỗi phần cứng từ nhà sản xuất."
     },
     {
       "id": "POL-REF-02",
       "category": "refunds",
-      "title": "Dieu kien hoan tien",
-      "content": "Hoan tien 100% qua vi hoac the ngan hang trong 3-5 ngay lam viec sau khi kho nhan lai hang va kiem tra hop le."
+      "title": "Điều kiện hoàn tiền",
+      "content": "Hoàn tiền 100% qua ví hoặc thẻ ngân hàng trong 3-5 ngày làm việc sau khi kho nhận lại hàng và kiểm tra hợp lệ."
     },
     {
       "id": "POL-SHP-03",
       "category": "shipping",
-      "title": "Chinh sach giao hang va phi ship",
-      "content": "Mien phi giao hang cho don hang tren 500.000 VND. Thoi gian giao hang tieu chuan tu 2-4 ngay."
+      "title": "Chính sách giao hàng và phí ship",
+      "content": "Miễn phí giao hàng cho đơn hàng trên 500.000 VNĐ. Thời gian giao hàng tiêu chuẩn từ 2-4 ngày."
     },
     {
       "id": "POL-VOU-04",
       "category": "vouchers",
-      "title": "Voucher den bu giao hang cham va loi nho",
-      "content": "Don hang bi giao tre tren 2 ngay hoac vo hop ngoai se duoc cap tu dong Voucher den bu tri gia 50.000 VND - 200.000 VND hoac hoan 10% gia tri don hang."
+      "title": "Voucher đền bù giao hàng chậm và lỗi nhỏ",
+      "content": "Đơn hàng bị giao trễ trên 2 ngày hoặc vỏ hộp ngoài bị móp sẽ được cấp tự động Voucher đền bù trị giá 50.000 VNĐ - 200.000 VNĐ hoặc hoàn 10% giá trị đơn hàng."
     }
   ]
 }
