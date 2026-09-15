@@ -1,0 +1,168 @@
+{
+  "run_id": "v0_B_extension_openrouter_20260915T192538616960",
+  "version": "v0",
+  "artifact_version": "v0+pb38e713370aa+t1af32a9b074d",
+  "prompt_hash": "b38e713370aad130c0ffffca6ac77c1357d4dc353dec6b48f9357f01434cfb78",
+  "tools_hash": "1af32a9b074da99b4c4873bd242824bb240268532770ca7ba3a35e5af726444b",
+  "phase": "B",
+  "suite": "extension",
+  "provider": "openrouter",
+  "model": "openai/gpt-4o-mini",
+  "system_prompt": "A:\\VINAI\\K4-L3B-Day04-DH-Prompt-Engineering-Tool-Calling-Labs\\starter_v0\\artifacts\\system_prompt.md",
+  "tools": "A:\\VINAI\\K4-L3B-Day04-DH-Prompt-Engineering-Tool-Calling-Labs\\starter_v0\\artifacts\\tools.yaml",
+  "eval_cases": "data\\eval_bonus.json",
+  "dataset_id": "day04_v3_ecommerce_bonus",
+  "dataset_role": "extension",
+  "description": "Bonus evaluation suite for Automated Compensation Voucher Generator (+10 Points).",
+  "generated_at": "2026-09-15T19:25:38",
+  "summary": {
+    "total_cases": 2,
+    "measured_cases": 2,
+    "provider_error_cases": 0,
+    "passed_cases": 1,
+    "case_accuracy": 0.5,
+    "tool_routing_accuracy": 0.5,
+    "argument_accuracy": 0.5,
+    "multiturn_accuracy": null,
+    "failure_counts": {
+      "wrong_boundary": 1
+    },
+    "observed_mismatch_counts": {
+      "missing_tool_call": 1
+    }
+  },
+  "results": [
+    {
+      "id": "BONUS01_issue_voucher_confirmed",
+      "phase": "B",
+      "suite": "extension",
+      "case_suite": "extension",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "bonus_issue_voucher",
+        "difficulty": "medium",
+        "what_it_tests": "Phat hanh voucher den bu khi khach dong y."
+      },
+      "input": "Đơn hàng ORD-8801 của mình bị giao trễ 3 ngày, phát hành voucher đền bù 20$ giúp mình, mình đồng ý.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "auto_generate_compensation_voucher",
+            "args": {
+              "order_id": "ORD-8801",
+              "reason": "shipping_delay",
+              "amount_usd": 20.0,
+              "confirmed": true
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "auto_generate_compensation_voucher",
+            "args": {
+              "order_id": "ORD-8801",
+              "reason": "shipping_delay",
+              "amount_usd": 20,
+              "confirmed": true
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_boundary",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "auto_generate_compensation_voucher",
+          "args": {
+            "order_id": "ORD-8801",
+            "reason": "shipping_delay",
+            "amount_usd": 20,
+            "confirmed": true
+          },
+          "result": {
+            "tool": "auto_generate_compensation_voucher",
+            "voucher_code": "VOUCHER-SHI-7B85",
+            "order_id": "ORD-8801",
+            "reason": "shipping_delay",
+            "amount_usd": 20,
+            "status": "issued",
+            "message": "Compensation voucher VOUCHER-SHI-7B85 for $20 issued successfully."
+          }
+        }
+      ]
+    },
+    {
+      "id": "BONUS02_issue_voucher_unconfirmed",
+      "phase": "B",
+      "suite": "extension",
+      "case_suite": "extension",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "bonus_unconfirmed_voucher",
+        "difficulty": "medium",
+        "what_it_tests": "Chua confirmed thi phai xac nhan voi khach."
+      },
+      "input": "Đơn ORD-8801 bị giao chậm, bạn xem có đền bù voucher được không?",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify"
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "routing_correct": false,
+        "args_correct": false,
+        "actual_tool_calls": [
+          {
+            "name": "check_order_status",
+            "args": {
+              "order_id": "ORD-8801"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_boundary",
+        "observed_mismatch": "missing_tool_call",
+        "failure_type": "wrong_boundary",
+        "failures": [
+          "missing tool call clarify",
+          "extra tool call check_order_status"
+        ]
+      },
+      "tool_results": [
+        {
+          "tool": "check_order_status",
+          "args": {
+            "order_id": "ORD-8801"
+          },
+          "result": {
+            "tool": "check_order_status",
+            "order": {
+              "order_id": "ORD-8801",
+              "customer_id": "CUST-1001",
+              "product_name": "Sony WH-1000XM5 Headphone",
+              "serial_number": "SN-SNY-9921",
+              "status": "delivered",
+              "delivered_date": "2026-09-10",
+              "total_price": 399.0,
+              "carrier": "VNPost",
+              "tracking_number": "VN12345678",
+              "return_eligible": true
+            },
+            "snapshot_at": "2026-09-15T18:00:00Z"
+          }
+        }
+      ]
+    }
+  ]
+}
