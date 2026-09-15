@@ -1,67 +1,59 @@
-# starter_v0 — intentionally incomplete first-draft declarations.
-# Students improve routing guidance, argument conventions, missing-information
-# handling, and confirmation boundaries through v1/v2/v3.
-#
-# Keep built-in names and supplied evaluation cases unchanged.
-# Improve descriptions and compatible schemas. Declare team-built bonus tools
-# here and in tools/__init__.py, then test them with team-authored cases.
 tools:
-  # ---------------- Core tools ----------------
+  # ---------------- Core E-Commerce Customer Support Tools ----------------
   - name: clarify
-    description: "Gửi một câu hỏi cho người dùng."
+    description: "Hoi lai nguoi dung khi thieu thong tin bat buoc (Ma don hang, email, xac nhan)."
     parameters:
       type: object
       properties:
-        question: {type: string, default: "", description: "Câu hỏi"}
-        response_type: {type: string, enum: [text, yes_no, choice], default: "text", description: "Kiểu trả lời"}
-        options: {type: array, default: [], items: {type: string}, description: "Các lựa chọn"}
+        question: {type: string, default: "", description: "Cau hoi danh cho khach hang"}
+        response_type: {type: string, enum: [text, yes_no, choice], default: "text", description: "Kieu tra loi"}
+        options: {type: array, default: [], items: {type: string}, description: "Cac lua chon neu co"}
       required: [question]
 
-  - name: search_kb
-    description: "Tìm hướng dẫn hỗ trợ kỹ thuật."
+  - name: search_store_policy
+    description: "Tra cuu quy dinh, chinh sach giao hang, phi ship va quy dinh chung cua cua hang."
     parameters:
       type: object
       properties:
-        query: {type: string, default: "", description: "Nội dung cần tìm"}
-        category: {type: string, enum: [all, vpn, email, wifi, printing, account, security, hardware, software, meeting_room], default: "all", description: "Nhóm hướng dẫn"}
-        top_k: {type: integer, default: 3, description: "Số kết quả"}
+        query: {type: string, default: "", description: "Noi dung chinh sach can tim"}
+        category: {type: string, enum: [all, returns, refunds, shipping, vouchers, general], default: "all", description: "Nhom chinh sach"}
+        top_k: {type: integer, default: 3, description: "So ket qua tra ve"}
       required: [query]
 
-  - name: check_service_status
-    description: "Kiểm tra trạng thái một dịch vụ."
+  - name: check_order_status
+    description: "Kiem tra trang thai don hang, don vi van chuyen va ngay giao hang du kien qua ma don hang."
     parameters:
       type: object
       properties:
-        service: {type: string, enum: [vpn, email, sso, wifi, printing], description: "Tên dịch vụ"}
-        environment: {type: string, enum: [production, staging], default: "production", description: "Môi trường"}
-      required: [service]
+        order_id: {type: string, description: "Ma don hang (vi du: ORD-8801)"}
+      required: [order_id]
 
-  - name: inspect_device
-    description: "Kiểm tra thông tin và chẩn đoán thiết bị."
+  - name: inspect_product_warranty
+    description: "Tra cuu thoi han bao hanh, ma serial va ket qua chan doan tinh trang bao hanh san pham."
     parameters:
       type: object
       properties:
-        asset_id: {type: string, description: "Mã tài sản"}
-        check: {type: string, enum: [all, network, vpn, security, hardware, software], default: "all", description: "Nhóm kiểm tra"}
-      required: [asset_id]
+        serial_number: {type: string, description: "Ma serial number cua san pham"}
+        check: {type: string, enum: [all, hardware, bluetooth, battery, display], default: "all", description: "Nhom kiem tra"}
+      required: [serial_number]
 
-  - name: lookup_user
-    description: "Tra cứu người dùng trong danh bạ hỗ trợ."
+  - name: lookup_customer
+    description: "Tra cuu thong tin khach hang, hang VIP, email, dia chi qua Ma khach hang hoac Email."
     parameters:
       type: object
       properties:
-        employee_id: {type: string, description: "Mã nhân viên"}
-      required: [employee_id]
+        customer_id: {type: string, description: "Ma khach hang (vi du: CUST-1001)"}
+        email: {type: string, description: "Email khach hang"}
 
-  - name: format_incident_report
-    description: "Trình bày các kết quả đã có thành báo cáo."
+  - name: format_return_summary
+    description: "Format va xuat bao cao tong hop khieu nai / yeu cau doi tra."
     parameters:
       type: object
       properties:
         findings:
           type: array
           default: []
-          description: "Các kết quả đã thu thập"
+          description: "Cac ket qua da thu thap"
           items:
             type: object
             properties:
@@ -69,39 +61,50 @@ tools:
               detail: {type: string}
               source: {type: string}
               status: {type: string}
-        template: {type: string, enum: [brief, technical, handoff], default: "brief", description: "Mẫu báo cáo"}
-        incident_title: {type: string, default: "IT incident", description: "Tiêu đề"}
+        template: {type: string, enum: [brief, technical, handoff], default: "brief", description: "Mau bao cao"}
+        incident_title: {type: string, default: "Customer Return Summary", description: "Tieu de bao cao"}
       required: [findings, template]
 
-  # ---------------- Optional/advanced tools ----------------
-  - name: search_device_info
-    description: "Tìm thông tin công khai về một model thiết bị trên web. Chỉ truyền hãng, model và loại thông tin; không truyền asset ID, employee ID hoặc dữ liệu nội bộ."
+  - name: search_product_specs
+    description: "Tim kiem thong so ky thuat cong khai, huong dan su dung cua san pham tren internet."
     parameters:
       type: object
       properties:
-        manufacturer: {type: string, description: "Hãng sản xuất công khai, ví dụ Lenovo"}
-        model: {type: string, description: "Tên model công khai, ví dụ ThinkPad T14 Gen 4"}
-        query_type: {type: string, enum: [specs, drivers, support, compatibility], default: "support", description: "Loại thông tin cần tìm"}
-        max_results: {type: integer, default: 3, description: "Số kết quả, tối đa 5"}
+        manufacturer: {type: string, description: "Hang san xuat, vi du: Sony, Logitech"}
+        model: {type: string, description: "Ten model san pham, vi du: WH-1000XM5"}
+        query_type: {type: string, enum: [specs, drivers, support, compatibility], default: "specs", description: "Loai thong tin"}
+        max_results: {type: integer, default: 3, description: "So ket qua"}
       required: [manufacturer, model, query_type]
 
-  - name: policy
-    description: "Tìm trong chính sách IT nội bộ."
+  - name: check_refund_conditions
+    description: "Kiem tra dieu kien hoan tien, thoi han hoan tien cho tung loai san pham."
     parameters:
       type: object
       properties:
-        query: {type: string, default: "", description: "Nội dung cần tìm"}
-        policy_area: {type: string, enum: [all, access_control, data_privacy, external_tools, incident_response, service_operations, ticketing], default: "all", description: "Nhóm chính sách"}
-        top_k: {type: integer, default: 3, description: "Số mục"}
+        query: {type: string, default: "", description: "Noi dung kiem tra hoan tien"}
+        policy_area: {type: string, enum: [all, returns, refunds, vouchers], default: "all", description: "Linh vuc kiem tra"}
+        top_k: {type: integer, default: 3, description: "So ket qua"}
       required: [query]
 
-  - name: create_ticket
-    description: "Tạo một ticket hỗ trợ."
+  - name: create_return_ticket
+    description: "Tao ticket yeu cau doi tra hang. BAT BUOC confirm tu nguoi dung (confirmed: true) truoc khi goi."
     parameters:
       type: object
       properties:
-        summary: {type: string, default: "", description: "Tóm tắt sự cố"}
-        priority: {type: string, enum: [low, medium, high, critical], default: "medium", description: "Mức ưu tiên"}
-        asset_id: {type: string, default: "", description: "Mã tài sản nếu có"}
-        confirmed: {type: boolean, default: false, description: "Đã được người dùng xác nhận"}
+        summary: {type: string, default: "", description: "Tom tat ly do doi tra"}
+        priority: {type: string, enum: [low, medium, high, critical], default: "medium", description: "Muc uu tien"}
+        order_id: {type: string, default: "", description: "Ma don hang"}
+        confirmed: {type: boolean, default: false, description: "Xac nhan tu khach hang (true neu dong y, false neu chua)"}
       required: [summary]
+
+  # ---------------- Bonus Tool (+10 Points) ----------------
+  - name: auto_generate_compensation_voucher
+    description: "Tu dong phat hanh Voucher den bu tri gia 50k-200k/20$ cho don hang bi giao tre hoac loi nho. Can xac nhan (confirmed: true)."
+    parameters:
+      type: object
+      properties:
+        order_id: {type: string, description: "Ma don hang duoc den bu"}
+        reason: {type: string, description: "Ly do den bu (shipping_delay, packaging_damage)"}
+        amount_usd: {type: number, default: 20.0, description: "So tien den bu USD"}
+        confirmed: {type: boolean, default: false, description: "Xac nhan tu khach hang (true/false)"}
+      required: [order_id, reason]

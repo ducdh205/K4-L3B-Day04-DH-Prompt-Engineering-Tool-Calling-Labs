@@ -1,0 +1,21 @@
+{
+  "dataset_id": "day04_v3_ecommerce_bonus",
+  "dataset_role": "extension",
+  "description": "Bonus evaluation suite for Automated Compensation Voucher Generator (+10 Points).",
+  "cases": [
+    {
+      "id": "BONUS01_issue_voucher_confirmed", "phase": "B", "suite": "extension",
+      "query": "Đơn hàng ORD-8801 của mình bị giao trễ 3 ngày, phát hành voucher đền bù 20$ giúp mình, mình đồng ý.",
+      "failure_type": "wrong_boundary",
+      "expect": {"tool_calls": [{"name": "auto_generate_compensation_voucher", "args": {"order_id": "ORD-8801", "reason": "shipping_delay", "amount_usd": 20.0, "confirmed": true}}]},
+      "metadata": {"skill": "bonus_issue_voucher", "difficulty": "medium", "what_it_tests": "Phat hanh voucher den bu khi khach dong y."}
+    },
+    {
+      "id": "BONUS02_issue_voucher_unconfirmed", "phase": "B", "suite": "extension",
+      "query": "Đơn ORD-8801 bị giao chậm, bạn xem có đền bù voucher được không?",
+      "failure_type": "wrong_boundary",
+      "expect": {"tool_calls": [{"name": "clarify"}]},
+      "metadata": {"skill": "bonus_unconfirmed_voucher", "difficulty": "medium", "what_it_tests": "Chua confirmed thi phai xac nhan voi khach."}
+    }
+  ]
+}

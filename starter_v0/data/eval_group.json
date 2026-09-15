@@ -1,7 +1,97 @@
 {
-  "dataset_id": "day04_v3_helpdesk_group",
+  "dataset_id": "day04_v3_ecommerce_group",
   "dataset_role": "group",
-  "description": "Template intentionally left empty. The team must write exactly 10 original IT helpdesk cases: 5 single-turn query cases and 5 multi-turn turns cases.",
-  "allowed_failure_types": ["wrong_tool", "wrong_arg_value", "wrong_boundary", "unnecessary_tool", "out_of_scope", "missing_info"],
-  "cases": []
+  "description": "Team-authored evaluation suite for Smart E-Commerce Assistant (5 single-turn + 5 multi-turn).",
+  "cases": [
+    {
+      "id": "G01_single_order_check", "phase": "B", "suite": "group",
+      "query": "Tra cứu trạng thái đơn hàng ORD-8804.",
+      "failure_type": "wrong_tool",
+      "expect": {"tool_calls": [{"name": "check_order_status", "args": {"order_id": "ORD-8804"}}]},
+      "metadata": {"skill": "team_order_check", "difficulty": "easy", "what_it_tests": "Team case: Kiem tra don hang ORD-8804."}
+    },
+    {
+      "id": "G02_single_customer_lookup", "phase": "B", "suite": "group",
+      "query": "Tra cứu tài khoản khách hàng CUST-1003.",
+      "failure_type": "wrong_tool",
+      "expect": {"tool_calls": [{"name": "lookup_customer", "args": {"customer_id": "CUST-1003"}}]},
+      "metadata": {"skill": "team_customer_lookup", "difficulty": "easy", "what_it_tests": "Team case: Tra cuu customer_id CUST-1003."}
+    },
+    {
+      "id": "G03_single_shipping_policy", "phase": "B", "suite": "group",
+      "query": "Chính sách miễn phí vận chuyển của shop quy định đơn bao nhiêu tiền?",
+      "failure_type": "wrong_tool",
+      "expect": {"tool_calls": [{"name": "search_store_policy", "args": {"category": "shipping"}}]},
+      "metadata": {"skill": "team_shipping_policy", "difficulty": "easy", "what_it_tests": "Team case: Tim chinh sach phi ship."}
+    },
+    {
+      "id": "G04_single_missing_info", "phase": "B", "suite": "group",
+      "query": "Đơn hàng của mình khi nào giao tới?",
+      "failure_type": "missing_info",
+      "expect": {"tool_calls": [{"name": "clarify"}]},
+      "metadata": {"skill": "team_missing_info", "difficulty": "medium", "what_it_tests": "Team case: Thieu order_id phai clarify."}
+    },
+    {
+      "id": "G05_single_out_of_scope", "phase": "B", "suite": "group",
+      "query": "Viết giúp mình 1 bài thơ về tình yêu.",
+      "failure_type": "out_of_scope",
+      "expect": {"no_tool": true, "behavior": "refuse"},
+      "metadata": {"skill": "team_out_of_scope", "difficulty": "easy", "what_it_tests": "Team case: Lam tho ngoai CSKH."}
+    },
+    {
+      "id": "G06_multiturn_order_flow", "phase": "B", "suite": "group", "is_multiturn": true,
+      "turns": [
+        {"role": "user", "content": "Cho mình xem tình trạng đơn hàng của mình."},
+        {"role": "assistant", "content": "Vui lòng cho mình xin Mã đơn hàng nhé?"},
+        {"role": "user", "content": "Mã đơn là ORD-8802."}
+      ],
+      "failure_type": "missing_info",
+      "expect": {"tool_calls": [{"name": "check_order_status", "args": {"order_id": "ORD-8802"}}]},
+      "metadata": {"skill": "team_multiturn_order", "difficulty": "medium", "what_it_tests": "Team case: Multi-turn cung cap Order ID."}
+    },
+    {
+      "id": "G07_multiturn_confirm_return", "phase": "B", "suite": "group", "is_multiturn": true,
+      "turns": [
+        {"role": "user", "content": "Yêu cầu đổi trả đơn ORD-8801."},
+        {"role": "assistant", "content": "Bạn đồng ý xác nhận tạo ticket đổi trả cho đơn ORD-8801 chứ?"},
+        {"role": "user", "content": "Tôi đồng ý tạo ticket đổi trả."}
+      ],
+      "failure_type": "wrong_boundary",
+      "expect": {"tool_calls": [{"name": "create_return_ticket", "args": {"order_id": "ORD-8801", "confirmed": true}}]},
+      "metadata": {"skill": "team_multiturn_confirm", "difficulty": "medium", "what_it_tests": "Team case: Multi-turn xac nhan ticket."}
+    },
+    {
+      "id": "G08_multiturn_cancel_return", "phase": "B", "suite": "group", "is_multiturn": true,
+      "turns": [
+        {"role": "user", "content": "Tạo yêu cầu đổi trả đơn ORD-8801."},
+        {"role": "assistant", "content": "Bạn xác nhận tạo ticket đổi trả chứ?"},
+        {"role": "user", "content": "Không, tôi đổi ý rồi, không tạo nữa."}
+      ],
+      "failure_type": "wrong_boundary",
+      "expect": {"no_tool": true},
+      "metadata": {"skill": "team_multiturn_cancel", "difficulty": "medium", "what_it_tests": "Team case: Multi-turn huy ticket."}
+    },
+    {
+      "id": "G09_multiturn_warranty_check", "phase": "B", "suite": "group", "is_multiturn": true,
+      "turns": [
+        {"role": "user", "content": "Tôi muốn kiểm tra sản phẩm tai nghe."},
+        {"role": "assistant", "content": "Bạn cung cấp mã serial number tai nghe giúp mình nhé?"},
+        {"role": "user", "content": "Serial number là SN-SNY-9921."}
+      ],
+      "failure_type": "missing_info",
+      "expect": {"tool_calls": [{"name": "inspect_product_warranty", "args": {"serial_number": "SN-SNY-9921"}}]},
+      "metadata": {"skill": "team_multiturn_warranty", "difficulty": "medium", "what_it_tests": "Team case: Multi-turn kiem tra serial."}
+    },
+    {
+      "id": "G10_multiturn_specs_search", "phase": "B", "suite": "group", "is_multiturn": true,
+      "turns": [
+        {"role": "user", "content": "Mình vừa mua bàn phím Logitech MX Master 3S."},
+        {"role": "assistant", "content": "Chúc mừng bạn đã sở hữu Logitech MX Master 3S!"},
+        {"role": "user", "content": "Tra cứu thông số kỹ thuật của sản phẩm này giúp mình."}
+      ],
+      "failure_type": "wrong_tool",
+      "expect": {"tool_calls": [{"name": "search_product_specs", "args": {"manufacturer": "Logitech", "model": "MX Master 3S", "query_type": "specs"}}]},
+      "metadata": {"skill": "team_multiturn_specs", "difficulty": "medium", "what_it_tests": "Team case: Tra cuu specs theo ngu canh."}
+    }
+  ]
 }

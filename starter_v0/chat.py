@@ -151,7 +151,7 @@ def write_transcript(path: Path, transcript: dict[str, Any]) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Interactive IT Helpdesk Agent chat with transcript logging.")
-    parser.add_argument("--provider", choices=["openrouter", "openai", "anthropic", "gemini"], required=True)
+    parser.add_argument("--provider", choices=["openrouter", "openai", "anthropic", "gemini", "groq"], required=True)
     parser.add_argument("--model", default=None)
     parser.add_argument("--version", required=True, help="Student-chosen artifact version label, e.g. v0, v1, v2.")
     parser.add_argument("--system-prompt", type=Path, default=ARTIFACTS_DIR / "system_prompt.md")

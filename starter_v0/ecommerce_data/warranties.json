@@ -1,0 +1,42 @@
+{
+  "snapshot_at": "2026-09-15T18:00:00Z",
+  "warranties": [
+    {
+      "serial_number": "SN-SNY-9921",
+      "product_name": "Sony WH-1000XM5 Headphone",
+      "order_id": "ORD-8801",
+      "warranty_status": "valid",
+      "expires_at": "2027-09-10",
+      "coverage": "12-month full hardware & ANC sensor warranty",
+      "diagnostics": {
+        "hardware_ok": true,
+        "bluetooth": "intermittent_pairing_defect",
+        "battery_health": "100%"
+      }
+    },
+    {
+      "serial_number": "SN-LOG-3312",
+      "product_name": "Logitech MX Master 3S Mouse",
+      "order_id": "ORD-8802",
+      "warranty_status": "valid",
+      "expires_at": "2027-03-15",
+      "coverage": "12-month peripheral warranty",
+      "diagnostics": {
+        "hardware_ok": true,
+        "sensor": "normal"
+      }
+    },
+    {
+      "serial_number": "SN-DEL-7700",
+      "product_name": "Dell UltraSharp U2723QE Monitor",
+      "order_id": "ORD-8803",
+      "warranty_status": "valid",
+      "expires_at": "2028-01-01",
+      "coverage": "36-month premium panel guarantee",
+      "diagnostics": {
+        "panel": "normal",
+        "dead_pixels": 0
+      }
+    }
+  ]
+}

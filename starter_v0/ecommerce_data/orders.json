@@ -1,0 +1,53 @@
+{
+  "snapshot_at": "2026-09-15T18:00:00Z",
+  "orders": [
+    {
+      "order_id": "ORD-8801",
+      "customer_id": "CUST-1001",
+      "product_name": "Sony WH-1000XM5 Headphone",
+      "serial_number": "SN-SNY-9921",
+      "status": "delivered",
+      "delivered_date": "2026-09-10",
+      "total_price": 399.0,
+      "carrier": "VNPost",
+      "tracking_number": "VN12345678",
+      "return_eligible": true
+    },
+    {
+      "order_id": "ORD-8802",
+      "customer_id": "CUST-1002",
+      "product_name": "Logitech MX Master 3S Mouse",
+      "serial_number": "SN-LOG-3312",
+      "status": "in_transit",
+      "estimated_delivery": "2026-09-17",
+      "total_price": 99.0,
+      "carrier": "GHN",
+      "tracking_number": "GHN998877",
+      "return_eligible": false
+    },
+    {
+      "order_id": "ORD-8803",
+      "customer_id": "CUST-1003",
+      "product_name": "Dell UltraSharp U2723QE Monitor",
+      "serial_number": "SN-DEL-7700",
+      "status": "processing",
+      "estimated_delivery": "2026-09-18",
+      "total_price": 620.0,
+      "carrier": "GHTK",
+      "tracking_number": "GHTK554433",
+      "return_eligible": false
+    },
+    {
+      "order_id": "ORD-8804",
+      "customer_id": "CUST-1001",
+      "product_name": "Apple MacBook Pro M3",
+      "serial_number": "SN-APL-0012",
+      "status": "delivered",
+      "delivered_date": "2026-08-01",
+      "total_price": 1999.0,
+      "carrier": "VNPost",
+      "tracking_number": "VN88776655",
+      "return_eligible": false
+    }
+  ]
+}

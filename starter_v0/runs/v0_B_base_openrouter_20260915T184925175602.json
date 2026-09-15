@@ -1,0 +1,1238 @@
+{
+  "run_id": "v0_B_base_openrouter_20260915T184925175602",
+  "version": "v0",
+  "artifact_version": "v0+pe58ee302b738+t1af32a9b074d",
+  "prompt_hash": "e58ee302b738e82dedbc704b8e474232f40cc71d875621eeeb3871662840c14a",
+  "tools_hash": "1af32a9b074da99b4c4873bd242824bb240268532770ca7ba3a35e5af726444b",
+  "phase": "B",
+  "suite": "base",
+  "provider": "openrouter",
+  "model": "openai/gpt-4o-mini",
+  "system_prompt": "A:\\VINAI\\K4-L3B-Day04-DH-Prompt-Engineering-Tool-Calling-Labs\\starter_v0\\artifacts\\system_prompt.md",
+  "tools": "A:\\VINAI\\K4-L3B-Day04-DH-Prompt-Engineering-Tool-Calling-Labs\\starter_v0\\artifacts\\tools.yaml",
+  "eval_cases": "data\\eval_base.json",
+  "dataset_id": "day04_v3_ecommerce_base",
+  "dataset_role": "base",
+  "description": "Base evaluation suite for Smart E-Commerce Customer Support & Refund Assistant.",
+  "generated_at": "2026-09-15T18:49:25",
+  "summary": {
+    "total_cases": 30,
+    "measured_cases": 0,
+    "provider_error_cases": 30,
+    "passed_cases": 0,
+    "case_accuracy": 0.0,
+    "failure_counts": {},
+    "observed_mismatch_counts": {}
+  },
+  "results": [
+    {
+      "id": "E01_order_status_routing",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "route_order_status",
+        "difficulty": "easy",
+        "what_it_tests": "Kiem tra don hang qua Order ID."
+      },
+      "input": "Kiểm tra tình trạng vận chuyển của đơn hàng ORD-8801 giúp mình.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "check_order_status",
+            "args": {
+              "order_id": "ORD-8801"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "AuthenticationError: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "E02_warranty_routing",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "route_warranty",
+        "difficulty": "easy",
+        "what_it_tests": "Kiem tra bao hanh qua Serial Number."
+      },
+      "input": "Kiểm tra tình trạng bảo hành tai nghe serial SN-SNY-9921.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "inspect_product_warranty",
+            "args": {
+              "serial_number": "SN-SNY-9921",
+              "check": "all"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "AuthenticationError: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "E03_policy_routing",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "route_store_policy",
+        "difficulty": "easy",
+        "what_it_tests": "Tra cuu chinh sach giao hang."
+      },
+      "input": "Cho mình tìm quy định về giao hàng và phí ship của shop.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "search_store_policy",
+            "args": {
+              "category": "shipping"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "AuthenticationError: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "E04_customer_routing",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "route_customer",
+        "difficulty": "easy",
+        "what_it_tests": "Tra cuu customer_id."
+      },
+      "input": "Tra cứu thông tin tài khoản khách hàng CUST-1001.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup_customer",
+            "args": {
+              "customer_id": "CUST-1001"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "AuthenticationError: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "E05_warranty_check_arg",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "warranty_check_arg",
+        "difficulty": "medium",
+        "what_it_tests": "Check dung check=bluetooth."
+      },
+      "input": "Kiểm tra kết nối bluetooth tai nghe SN-SNY-9921.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "inspect_product_warranty",
+            "args": {
+              "serial_number": "SN-SNY-9921",
+              "check": "bluetooth"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "AuthenticationError: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "E06_refund_conditions_routing",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "refund_conditions",
+        "difficulty": "medium",
+        "what_it_tests": "Tra cuu dieu kien hoan tien."
+      },
+      "input": "Điều kiện hoàn tiền và thời gian nhận lại tiền qua thẻ ngân hàng là gì?",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "check_refund_conditions",
+            "args": {
+              "policy_area": "refunds"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "AuthenticationError: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "E07_format_return_summary",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "format_findings",
+        "difficulty": "medium",
+        "what_it_tests": "Format finding co san."
+      },
+      "input": "Trình bày các finding sau thành báo cáo đổi trả tên 'Khuyến mại tai nghe': Tai nghe lỗi bluetooth; Đơn hàng ORD-8801.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "format_return_summary",
+            "args": {
+              "template": "brief",
+              "incident_title": "Khuyến mại tai nghe"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "AuthenticationError: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "E08_out_of_scope",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "out_of_scope",
+        "difficulty": "easy",
+        "what_it_tests": "Yeu cau ngoai CSKH e-commerce."
+      },
+      "input": "Thời tiết hôm nay tại Hà Nội thế nào?",
+      "expect": {
+        "no_tool": true,
+        "behavior": "refuse"
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "out_of_scope",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "AuthenticationError: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "E09_customer_email_lookup",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "customer_email",
+        "difficulty": "easy",
+        "what_it_tests": "Tra cuu qua email."
+      },
+      "input": "Tra cứu thông tin khách hàng có email an.nguyen@example.com.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup_customer",
+            "args": {
+              "email": "an.nguyen@example.com"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "AuthenticationError: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "E10_missing_order_id",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "missing_order_id",
+        "difficulty": "medium",
+        "what_it_tests": "Thieu order_id phai clarify."
+      },
+      "input": "Tôi muốn kiểm tra tình trạng giao hàng của tôi.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify"
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "missing_info",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "AuthenticationError: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "E11_missing_serial_number",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "missing_serial",
+        "difficulty": "medium",
+        "what_it_tests": "Thieu serial_number phai clarify."
+      },
+      "input": "Kiểm tra giúp tôi chiếc tai nghe này có còn bảo hành không.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify"
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "missing_info",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "AuthenticationError: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "E12_search_product_specs",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "product_specs",
+        "difficulty": "easy",
+        "what_it_tests": "Tra cuu specs san pham."
+      },
+      "input": "Tra cứu thông số kỹ thuật sản phẩm Sony WH-1000XM5.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "search_product_specs",
+            "args": {
+              "manufacturer": "Sony",
+              "model": "WH-1000XM5",
+              "query_type": "specs"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "AuthenticationError: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "E13_unconfirmed_return_ticket",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "unconfirmed_ticket",
+        "difficulty": "medium",
+        "what_it_tests": "Chua confirmed khong duoc goi create_return_ticket."
+      },
+      "input": "Tôi muốn đổi trả sản phẩm đơn hàng ORD-8801 vì bị lỗi.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify"
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_boundary",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "AuthenticationError: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "E14_cancel_return_ticket",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "cancel_ticket",
+        "difficulty": "medium",
+        "what_it_tests": "Huy thi dung ngay khong goi tool."
+      },
+      "input": "Thôi mình không muốn tạo ticket đổi trả đơn ORD-8801 nữa, hủy giúp mình.",
+      "expect": {
+        "no_tool": true
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_boundary",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "AuthenticationError: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "E15_confirmed_return_ticket",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "confirmed_ticket",
+        "difficulty": "medium",
+        "what_it_tests": "Dong y confirmed=true thi tao ticket."
+      },
+      "input": "Mình đồng ý tạo ticket đổi trả đơn ORD-8801 do sản phẩm lỗi bluetooth.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "create_return_ticket",
+            "args": {
+              "order_id": "ORD-8801",
+              "confirmed": true
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_boundary",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "AuthenticationError: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "E16_return_policy_search",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "return_policy",
+        "difficulty": "easy",
+        "what_it_tests": "Chinh sach thoi han doi tra."
+      },
+      "input": "Thời hạn đổi trả hàng là bao nhiêu ngày?",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "search_store_policy",
+            "args": {
+              "category": "returns"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "AuthenticationError: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "E17_out_of_scope_coding",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "out_of_scope",
+        "difficulty": "easy",
+        "what_it_tests": "Lap trinh ngoai CSKH."
+      },
+      "input": "Viết giúp tôi một hàm Python sắp xếp mảng.",
+      "expect": {
+        "no_tool": true,
+        "behavior": "refuse"
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "out_of_scope",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "AuthenticationError: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "E18_order_status_transit",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "order_transit",
+        "difficulty": "easy",
+        "what_it_tests": "Kiem tra don transit."
+      },
+      "input": "Đơn hàng ORD-8802 đã đến đâu rồi?",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "check_order_status",
+            "args": {
+              "order_id": "ORD-8802"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "AuthenticationError: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "E19_customer_id_lookup",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "customer_tier",
+        "difficulty": "easy",
+        "what_it_tests": "Hang VIP cua customer."
+      },
+      "input": "Xem điểm thưởng và hạng tài khoản CUST-1002.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup_customer",
+            "args": {
+              "customer_id": "CUST-1002"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "AuthenticationError: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "E20_voucher_policy_search",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "voucher_policy",
+        "difficulty": "easy",
+        "what_it_tests": "Chinh sach voucher den bu."
+      },
+      "input": "Shop có chính sách đền bù khi giao hàng chậm không?",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "search_store_policy",
+            "args": {
+              "category": "vouchers"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "AuthenticationError: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "E21_multiturn_clarify_order",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_order",
+        "difficulty": "medium",
+        "what_it_tests": "Nhan Order ID o luot 2 de goi tool."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tôi muốn kiểm tra tình trạng đơn hàng của tôi."
+        },
+        {
+          "role": "assistant",
+          "content": "Bạn cho mình xin mã đơn hàng (Order ID) nhé?"
+        },
+        {
+          "role": "user",
+          "content": "Mã đơn hàng của mình là ORD-8801."
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "check_order_status",
+            "args": {
+              "order_id": "ORD-8801"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "missing_info",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "AuthenticationError: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "E22_multiturn_clarify_serial",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_serial",
+        "difficulty": "medium",
+        "what_it_tests": "Nhan serial number o luot 2."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tai nghe của tôi bị hỏng, kiểm tra bảo hành giúp tôi."
+        },
+        {
+          "role": "assistant",
+          "content": "Bạn cung cấp mã serial number của sản phẩm nhé?"
+        },
+        {
+          "role": "user",
+          "content": "Serial number là SN-SNY-9921."
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "inspect_product_warranty",
+            "args": {
+              "serial_number": "SN-SNY-9921"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "missing_info",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "AuthenticationError: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "E23_multiturn_confirm_ticket",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_confirm",
+        "difficulty": "medium",
+        "what_it_tests": "Xac nhan o luot 2 de tao ticket."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tôi muốn đổi trả đơn hàng ORD-8801."
+        },
+        {
+          "role": "assistant",
+          "content": "Bạn có chắc chắn muốn tạo ticket yêu cầu đổi trả đơn ORD-8801 không?"
+        },
+        {
+          "role": "user",
+          "content": "Đúng vậy, tôi đồng ý tạo ticket."
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "create_return_ticket",
+            "args": {
+              "order_id": "ORD-8801",
+              "confirmed": true
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_boundary",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "AuthenticationError: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "E24_multiturn_cancel_ticket",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_cancel",
+        "difficulty": "medium",
+        "what_it_tests": "Huy o luot 2 khong goi ticket tool."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tạo ticket đổi trả đơn ORD-8801 giúp mình."
+        },
+        {
+          "role": "assistant",
+          "content": "Bạn xác nhận tạo ticket đổi trả cho đơn ORD-8801 chứ?"
+        },
+        {
+          "role": "user",
+          "content": "À thôi, giữ lại dùng cũng được, đừng tạo nữa nhé."
+        }
+      ],
+      "expect": {
+        "no_tool": true
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_boundary",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "AuthenticationError: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "E25_multiturn_specs_followup",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_specs",
+        "difficulty": "medium",
+        "what_it_tests": "Dung ngu canh luot truoc de tra cuu specs."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Đơn ORD-8801 của mình gồm tai nghe Sony WH-1000XM5."
+        },
+        {
+          "role": "assistant",
+          "content": "Đã ghi nhận sản phẩm Sony WH-1000XM5."
+        },
+        {
+          "role": "user",
+          "content": "Tra cứu thông số kỹ thuật của mẫu tai nghe này giúp mình."
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "search_product_specs",
+            "args": {
+              "manufacturer": "Sony",
+              "model": "WH-1000XM5",
+              "query_type": "specs"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "AuthenticationError: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "E26_multiturn_customer_lookup",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_customer",
+        "difficulty": "medium",
+        "what_it_tests": "Nhan email o luot 2."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tôi muốn kiểm tra tài khoản của mình."
+        },
+        {
+          "role": "assistant",
+          "content": "Bạn cho tôi xin Email hoặc Mã khách hàng nhé?"
+        },
+        {
+          "role": "user",
+          "content": "Email của tôi là bich.tran@example.com."
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup_customer",
+            "args": {
+              "email": "bich.tran@example.com"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "missing_info",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "AuthenticationError: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "E27_multiturn_refund_conditions",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_refund",
+        "difficulty": "medium",
+        "what_it_tests": "Goi refund conditions o luot 2."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Sản phẩm bị trầy xước nhẹ có được hoàn tiền không?"
+        },
+        {
+          "role": "assistant",
+          "content": "Để kiểm tra điều kiện hoàn tiền, bạn cần tham khảo chính sách của shop."
+        },
+        {
+          "role": "user",
+          "content": "Tra cứu giúp mình điều kiện hoàn tiền cụ thể."
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "check_refund_conditions",
+            "args": {
+              "policy_area": "refunds"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "AuthenticationError: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "E28_multiturn_order_tracking",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_tracking",
+        "difficulty": "medium",
+        "what_it_tests": "Re-check status don hang."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Đơn hàng ORD-8803 bao giờ giao tới?"
+        },
+        {
+          "role": "assistant",
+          "content": "Đơn hàng ORD-8803 đang được xử lý."
+        },
+        {
+          "role": "user",
+          "content": "Kiểm tra lại trạng thái chi tiết của đơn ORD-8803 giúp mình."
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "check_order_status",
+            "args": {
+              "order_id": "ORD-8803"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "AuthenticationError: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "E29_multiturn_warranty_hardware",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_warranty",
+        "difficulty": "medium",
+        "what_it_tests": "Serial tu luot 1 + check=hardware tu luot 2."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tôi có mã serial SN-LOG-3312."
+        },
+        {
+          "role": "assistant",
+          "content": "Đã ghi nhận serial SN-LOG-3312."
+        },
+        {
+          "role": "user",
+          "content": "Kiểm tra phần cứng thiết bị này xem còn hạn bảo hành không."
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "inspect_product_warranty",
+            "args": {
+              "serial_number": "SN-LOG-3312",
+              "check": "hardware"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "AuthenticationError: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "E30_multiturn_out_of_scope",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_out_of_scope",
+        "difficulty": "easy",
+        "what_it_tests": "Toan hoc ngoai pham vi."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Chào bạn, mình cần hỗ trợ."
+        },
+        {
+          "role": "assistant",
+          "content": "Chào bạn, mình có thể giúp gì về đơn hàng hay bảo hành?"
+        },
+        {
+          "role": "user",
+          "content": "Bạn giải bài toán tích phân này giúp mình với."
+        }
+      ],
+      "expect": {
+        "no_tool": true,
+        "behavior": "refuse"
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "out_of_scope",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "AuthenticationError: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    }
+  ]
+}

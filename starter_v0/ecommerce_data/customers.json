@@ -1,0 +1,32 @@
+{
+  "snapshot_at": "2026-09-15T18:00:00Z",
+  "customers": [
+    {
+      "customer_id": "CUST-1001",
+      "name": "Nguyen Van An",
+      "email": "an.nguyen@example.com",
+      "phone": "0901234567",
+      "tier": "VIP",
+      "address": "123 Le Loi, District 1, Ho Chi Minh City",
+      "recent_orders": ["ORD-8801", "ORD-8804"]
+    },
+    {
+      "customer_id": "CUST-1002",
+      "name": "Tran Thi Bich",
+      "email": "bich.tran@example.com",
+      "phone": "0918765432",
+      "tier": "Gold",
+      "address": "456 Nguyen Hue, District 1, Ho Chi Minh City",
+      "recent_orders": ["ORD-8802"]
+    },
+    {
+      "customer_id": "CUST-1003",
+      "name": "Pham Minh Duc",
+      "email": "duc.pham@example.com",
+      "phone": "0988112233",
+      "tier": "Standard",
+      "address": "789 Tran Hung Dao, Hanoi",
+      "recent_orders": ["ORD-8803"]
+    }
+  ]
+}

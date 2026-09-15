@@ -1,0 +1,197 @@
+[
+  {
+    "timestamp": "v3",
+    "user_message": "Kiểm tra trạng thái đơn hàng ORD-8801",
+    "reply": "Đã kiểm tra trạng thái đơn hàng giúp bạn.",
+    "tool_calls": [
+      {
+        "name": "check_order_status",
+        "args": {
+          "order_id": "ORD-8801"
+        }
+      }
+    ],
+    "tool_results": [
+      {
+        "tool": "check_order_status",
+        "args": {
+          "order_id": "ORD-8801"
+        },
+        "result": {
+          "tool": "check_order_status",
+          "order": {
+            "order_id": "ORD-8801",
+            "customer_id": "CUST-1001",
+            "product_name": "Sony WH-1000XM5 Headphone",
+            "serial_number": "SN-SNY-9921",
+            "status": "delivered",
+            "delivered_date": "2026-09-10",
+            "total_price": 399.0,
+            "carrier": "VNPost",
+            "tracking_number": "VN12345678",
+            "return_eligible": true
+          },
+          "snapshot_at": "2026-09-15T18:00:00Z"
+        }
+      }
+    ],
+    "used_live_provider": false
+  },
+  {
+    "timestamp": "v3",
+    "user_message": "Kiem tra trang thai don hang ORD-8801",
+    "reply": "Đã kiểm tra trạng thái đơn hàng giúp bạn.",
+    "tool_calls": [
+      {
+        "name": "check_order_status",
+        "args": {
+          "order_id": "ORD-8801"
+        }
+      }
+    ],
+    "tool_results": [
+      {
+        "tool": "check_order_status",
+        "args": {
+          "order_id": "ORD-8801"
+        },
+        "result": {
+          "tool": "check_order_status",
+          "order": {
+            "order_id": "ORD-8801",
+            "customer_id": "CUST-1001",
+            "product_name": "Sony WH-1000XM5 Headphone",
+            "serial_number": "SN-SNY-9921",
+            "status": "delivered",
+            "delivered_date": "2026-09-10",
+            "total_price": 399.0,
+            "carrier": "VNPost",
+            "tracking_number": "VN12345678",
+            "return_eligible": true
+          },
+          "snapshot_at": "2026-09-15T18:00:00Z"
+        }
+      }
+    ],
+    "used_live_provider": false
+  },
+  {
+    "timestamp": "v3",
+    "user_message": "Kiểm tra trạng thái đơn hàng ORD-8801",
+    "reply": "Đã kiểm tra trạng thái đơn hàng giúp bạn.",
+    "tool_calls": [
+      {
+        "name": "check_order_status",
+        "args": {
+          "order_id": "ORD-8801"
+        }
+      }
+    ],
+    "tool_results": [
+      {
+        "tool": "check_order_status",
+        "args": {
+          "order_id": "ORD-8801"
+        },
+        "result": {
+          "tool": "check_order_status",
+          "order": {
+            "order_id": "ORD-8801",
+            "customer_id": "CUST-1001",
+            "product_name": "Sony WH-1000XM5 Headphone",
+            "serial_number": "SN-SNY-9921",
+            "status": "delivered",
+            "delivered_date": "2026-09-10",
+            "total_price": 399.0,
+            "carrier": "VNPost",
+            "tracking_number": "VN12345678",
+            "return_eligible": true
+          },
+          "snapshot_at": "2026-09-15T18:00:00Z"
+        }
+      }
+    ],
+    "used_live_provider": false
+  },
+  {
+    "timestamp": "v3",
+    "user_message": "Kiểm tra trạng thái đơn hàng ORD-8801",
+    "reply": "Đã kiểm tra trạng thái đơn hàng giúp bạn.",
+    "tool_calls": [
+      {
+        "name": "check_order_status",
+        "args": {
+          "order_id": "ORD-8801"
+        }
+      }
+    ],
+    "tool_results": [
+      {
+        "tool": "check_order_status",
+        "args": {
+          "order_id": "ORD-8801"
+        },
+        "result": {
+          "tool": "check_order_status",
+          "order": {
+            "order_id": "ORD-8801",
+            "customer_id": "CUST-1001",
+            "product_name": "Sony WH-1000XM5 Headphone",
+            "serial_number": "SN-SNY-9921",
+            "status": "delivered",
+            "delivered_date": "2026-09-10",
+            "total_price": 399.0,
+            "carrier": "VNPost",
+            "tracking_number": "VN12345678",
+            "return_eligible": true
+          },
+          "snapshot_at": "2026-09-15T18:00:00Z"
+        }
+      }
+    ],
+    "used_live_provider": false
+  },
+  {
+    "timestamp": "v3",
+    "user_message": "Kiểm tra bảo hành tai nghe serial SN-SNY-9921",
+    "reply": "Đã tra cứu thông tin bảo hành sản phẩm.",
+    "tool_calls": [
+      {
+        "name": "inspect_product_warranty",
+        "args": {
+          "serial_number": "SN-SNY-9921",
+          "check": "all"
+        }
+      }
+    ],
+    "tool_results": [
+      {
+        "tool": "inspect_product_warranty",
+        "args": {
+          "serial_number": "SN-SNY-9921",
+          "check": "all"
+        },
+        "result": {
+          "tool": "inspect_product_warranty",
+          "serial_number": "SN-SNY-9921",
+          "warranty": {
+            "serial_number": "SN-SNY-9921",
+            "product_name": "Sony WH-1000XM5 Headphone",
+            "order_id": "ORD-8801",
+            "warranty_status": "valid",
+            "expires_at": "2027-09-10",
+            "coverage": "12-month full hardware & ANC sensor warranty",
+            "diagnostics": {
+              "hardware_ok": true,
+              "bluetooth": "intermittent_pairing_defect",
+              "battery_health": "100%"
+            }
+          },
+          "check": "all",
+          "snapshot_at": "2026-09-15T18:00:00Z"
+        }
+      }
+    ],
+    "used_live_provider": false
+  }
+]

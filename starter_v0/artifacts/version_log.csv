@@ -1,1 +1,5 @@
 version,author,changed_artifact,artifact_version,prompt_hash,tools_hash,reason,hypothesis,metric_name,metric_before,metric_after,run_file
+v0,DinhHoangDuc & NguyenQuangHuy,starter_v0,v0,init,init,Baseline evaluation without optimization,Initial unoptimized baseline declarations,case_accuracy,0.0000,0.6333,runs/run_v0_base.json
+v1,DinhHoangDuc & NguyenQuangHuy,tools.yaml,v1,init,v1_tools,Tool routing mismatch,Clarifying tool descriptions and parameter constraints will fix wrong_tool and wrong_arg_value errors,case_accuracy,0.6333,0.8333,runs/run_v1_base.json
+v2,DinhHoangDuc & NguyenQuangHuy,system_prompt.md,v2,v2_prompt,v1_tools,Missing parameter handling,Adding mandatory clarify instructions for missing order_id/serial_number will resolve missing_info cases,case_accuracy,0.8333,0.9333,runs/run_v2_base.json
+v3,DinhHoangDuc & NguyenQuangHuy,system_prompt.md,v3,v3_prompt,v3_tools,Confirmation & safety boundaries,Enforcing strict confirmation checks before ticket/voucher creation and handling cancellation will achieve 100% accuracy,case_accuracy,0.9333,1.0000,runs/run_v3_base.json
