@@ -44,7 +44,7 @@ def append_transcript(turn_data: dict[str, Any]) -> None:
     TRANSCRIPT_FILE.write_text(json.dumps(history, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
-def run_mock_engine(user_message: str, history: list[dict[str, Any]]) -> tuple[str, list[dict[str, Any]]]:
+def run_mock_engine(user_message: str, history: list[dict[str, Any]], version: str = "v3") -> tuple[str, list[dict[str, Any]]]:
     """Smart local mock engine for offline testing if no live API key is set."""
     msg_lower = user_message.lower()
     
@@ -58,6 +58,9 @@ def run_mock_engine(user_message: str, history: list[dict[str, Any]]) -> tuple[s
             ord_id = match.group(0).upper()
             return "Đã kiểm tra trạng thái đơn hàng giúp bạn.", [{"name": "check_order_status", "args": {"order_id": ord_id}}]
         elif "kiểm tra" in msg_lower or "tình trạng" in msg_lower or "ở đâu" in msg_lower:
+            if version in ["v0"]:
+                # Baseline v0 flaw: calls tool directly with missing argument
+                return "Đang tra cứu đơn hàng...", [{"name": "check_order_status", "args": {}}]
             return "Bạn vui lòng cung cấp mã đơn hàng (Order ID, ví dụ ORD-8801) nhé?", [{"name": "clarify", "args": {"question": "Vui lòng cung cấp mã đơn hàng (Order ID)?"}}]
 
     # 2. Warranty
@@ -88,6 +91,10 @@ def run_mock_engine(user_message: str, history: list[dict[str, Any]]) -> tuple[s
         elif "hủy" in msg_lower or "không" in msg_lower or "thôi" in msg_lower:
             return "Đã hủy yêu cầu tạo ticket đổi trả theo mong muốn của bạn.", []
         else:
+            if version in ["v0", "v1"]:
+                # Old versions created ticket without waiting for confirmation
+                match_ord = re.search(r"ord-\d+", msg_lower, re.IGNORECASE) or "ORD-8801"
+                return "[v1/v0 Behavior] Đã tự động tạo ticket đổi trả.", [{"name": "create_return_ticket", "args": {"order_id": match_ord, "summary": "Lỗi sản phẩm", "confirmed": False}}]
             return "Bạn có chắc chắn muốn xác nhận tạo ticket đổi trả cho đơn hàng này không?", [{"name": "clarify", "args": {"question": "Bạn có chắc chắn xác nhận tạo ticket đổi trả?", "response_type": "yes_no"}}]
 
     # 5. Voucher bonus
@@ -101,7 +108,13 @@ def run_mock_engine(user_message: str, history: list[dict[str, Any]]) -> tuple[s
 
     # 6. Store policies
     if "giao hàng" in msg_lower or "phí ship" in msg_lower or "chính sách" in msg_lower or "vận chuyển" in msg_lower:
-        return "Đã tra cứu chính sách của shop.", [{"name": "search_store_policy", "args": {"category": "shipping", "query": user_message}}]
+        if version in ["v0", "v1"] and ("giao hàng" in msg_lower and "phí ship" in msg_lower):
+            # Demonstrates extra_tool_call failure in v0/v1 when prompt didn't restrict single call
+            return "[v1 Behavior] Đã tra cứu cả 2 mục giao hàng và phí ship.", [
+                {"name": "search_store_policy", "args": {"category": "shipping", "query": "giao hàng"}},
+                {"name": "search_store_policy", "args": {"category": "shipping", "query": "phí ship"}}
+            ]
+        return "Đã tra cứu chính sách của shop.", [{"name": "search_store_policy", "args": {"category": "shipping"}}]
 
     # 7. Refund conditions
     if "hoàn tiền" in msg_lower or "trả tiền" in msg_lower:
@@ -121,7 +134,8 @@ def run_mock_engine(user_message: str, history: list[dict[str, Any]]) -> tuple[s
 def process_chat(payload: dict[str, Any]) -> dict[str, Any]:
     user_msg = payload.get("message", "").strip()
     history = payload.get("history", [])
-    provider_name = payload.get("provider", "gemini")
+    provider_name = payload.get("provider", "openrouter")
+    version = payload.get("version", "v3")
     
     sys_prompt = (ARTIFACTS_DIR / "system_prompt.md").read_text(encoding="utf-8")
     declarations = load_tool_declarations(ARTIFACTS_DIR / "tools.yaml")
@@ -145,8 +159,8 @@ def process_chat(payload: dict[str, Any]) -> dict[str, Any]:
             tool_calls_data.append({"name": call.name, "args": call.args})
         used_live = True
     except Exception:
-        # Fallback to local deterministic mock engine
-        reply_text, tool_calls_data = run_mock_engine(user_msg, history)
+        # Fallback to local deterministic mock engine with version logic
+        reply_text, tool_calls_data = run_mock_engine(user_msg, history, version=version)
 
     # Execute tool functions
     tool_results: list[dict[str, Any]] = []
@@ -165,7 +179,8 @@ def process_chat(payload: dict[str, Any]) -> dict[str, Any]:
 
     version_info = get_version_info()
     turn_record = {
-        "timestamp": version_info.get("active_version", "v3"),
+        "version": version,
+        "timestamp": version,
         "user_message": user_msg,
         "reply": reply_text,
         "tool_calls": tool_calls_data,
@@ -178,7 +193,7 @@ def process_chat(payload: dict[str, Any]) -> dict[str, Any]:
         "reply": reply_text,
         "tool_calls": tool_calls_data,
         "tool_results": tool_results,
-        "version": "v3",
+        "version": version,
         "transcript_path": str(TRANSCRIPT_FILE),
         "used_live": used_live
     }
@@ -265,10 +280,22 @@ HTML_CONTENT = """<!DOCTYPE html>
             color: var(--text-muted);
         }
 
-        .header-badges {
+        .header-controls {
             display: flex;
             align-items: center;
             gap: 12px;
+        }
+
+        .version-select {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid var(--accent-purple);
+            color: var(--accent-blue);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            outline: none;
+            cursor: pointer;
         }
 
         .badge {
@@ -285,12 +312,6 @@ HTML_CONTENT = """<!DOCTYPE html>
             background: rgba(52, 211, 153, 0.15);
             color: var(--accent-emerald);
             border: 1px solid rgba(52, 211, 153, 0.3);
-        }
-
-        .badge-provider {
-            background: rgba(129, 140, 248, 0.15);
-            color: var(--accent-purple);
-            border: 1px solid rgba(129, 140, 248, 0.3);
         }
 
         .btn-transcript {
@@ -559,12 +580,18 @@ HTML_CONTENT = """<!DOCTYPE html>
             <div class="brand-icon">N</div>
             <div>
                 <div class="brand-title">Northstar CSKH AI Assistant</div>
-                <div class="brand-subtitle">Smart E-Commerce Tool Calling Demo</div>
+                <div class="brand-subtitle">Smart E-Commerce Tool Calling Demo (v0 - v3)</div>
             </div>
         </div>
-        <div class="header-badges">
-            <span class="badge badge-version">🚀 Active Artifact: v3</span>
-            <span class="badge badge-provider">⚡ Engine: Live/Mock Auto</span>
+        <div class="header-controls">
+            <label style="font-size: 12px; color: var(--text-muted);">Phiên bản:</label>
+            <select class="version-select" id="version-select" onchange="onVersionChange()">
+                <option value="v3" selected>🚀 Version v3 (100% PASS - Final Prompt & Rules)</option>
+                <option value="v2">⚙️ Version v2 (93.3% - Clarify Tuning)</option>
+                <option value="v1">🛠️ Version v1 (83.3% - Tools Refined)</option>
+                <option value="v0">🔴 Version v0 (63.3% - Unoptimized Baseline)</option>
+            </select>
+            <span class="badge badge-version" id="active-badge">🚀 v3 (100%)</span>
             <button class="btn-transcript" onclick="openTranscript()">📄 Xem Transcript</button>
         </div>
     </header>
@@ -572,9 +599,9 @@ HTML_CONTENT = """<!DOCTYPE html>
     <main>
         <div id="chat-container">
             <div class="message-row assistant">
-                <div class="bubble">
-                    Xin chào! Mình là Trợ lý CSKH tự động của Northstar E-Store (Version v3). 
-                    Mình có thể giúp bạn kiểm tra trạng thái đơn hàng, tra cứu bảo hành sản phẩm, xem chính sách đổi trả và hỗ trợ đền bù voucher tự động!
+                <div class="bubble" id="welcome-bubble">
+                    Xin chào! Mình là Trợ lý CSKH tự động của Northstar E-Store. <br>
+                    Đang ở phiên bản <b>Version v3</b> (Đạt độ chính xác 100%). Bạn có thể chuyển đổi giữa các phiên bản (v0, v1, v2, v3) ở thanh công cụ để so sánh hành vi gọi tool!
                 </div>
             </div>
         </div>
@@ -582,13 +609,15 @@ HTML_CONTENT = """<!DOCTYPE html>
         <div class="suggestions">
             <div class="chip" onclick="sendQuick('Kiểm tra trạng thái đơn hàng ORD-8801')">📦 Đơn ORD-8801</div>
             <div class="chip" onclick="sendQuick('Kiểm tra bảo hành tai nghe serial SN-SNY-9921')">🎧 Bảo hành SN-SNY-9921</div>
-            <div class="chip" onclick="sendQuick('Tôi muốn tạo ticket đổi trả đơn ORD-8801')">🎫 Đổi trả ORD-8801</div>
+            <div class="chip" onclick="sendQuick('Cho mình tìm quy định về giao hàng và phí ship của shop.')">🔍 Policy Giao hàng & Phí ship</div>
+            <div class="chip" onclick="sendQuick('Tôi muốn tạo ticket đổi trả đơn ORD-8801')">🎫 Đổi trả ORD-8801 (Xác nhận)</div>
             <div class="chip" onclick="sendQuick('Mình đồng ý tạo ticket đổi trả')">✅ Đồng ý xác nhận</div>
-            <div class="chip" onclick="sendQuick('Phát hành voucher đền bù 20$ cho đơn ORD-8801, mình đồng ý')">🎁 Voucher $20</div>
+            <div class="chip" onclick="sendQuick('Phát hành voucher đền bù 20$ cho đơn ORD-8801, mình đồng ý')">🎁 Bonus Voucher $20</div>
+            <div class="chip" onclick="sendQuick('Viết giúp tôi một bài thơ về tình yêu.')">🛑 Out of Scope (Từ chối)</div>
         </div>
 
         <div class="input-bar">
-            <input type="text" id="user-input" placeholder="Nhập câu hỏi của bạn (ví dụ: Kiểm tra đơn ORD-8801)..." onkeydown="if(event.key==='Enter') sendMessage()">
+            <input type="text" id="user-input" placeholder="Nhập câu hỏi (ví dụ: Kiểm tra đơn ORD-8801 hoặc Cho mình tìm quy định giao hàng và phí ship)..." onkeydown="if(event.key==='Enter') sendMessage()">
             <button onclick="sendMessage()">Gửi</button>
         </div>
     </main>
@@ -606,7 +635,23 @@ HTML_CONTENT = """<!DOCTYPE html>
     <script>
         const chatContainer = document.getElementById('chat-container');
         const userInput = document.getElementById('user-input');
+        const versionSelect = document.getElementById('version-select');
+        const activeBadge = document.getElementById('active-badge');
         let chatHistory = [];
+
+        function onVersionChange() {
+            const ver = versionSelect.value;
+            if (ver === 'v3') activeBadge.textContent = '🚀 v3 (100%)';
+            else if (ver === 'v2') activeBadge.textContent = '⚙️ v2 (93.3%)';
+            else if (ver === 'v1') activeBadge.textContent = '🛠️ v1 (83.3%)';
+            else activeBadge.textContent = '🔴 v0 (63.3%)';
+
+            const row = document.createElement('div');
+            row.className = 'message-row assistant';
+            row.innerHTML = `<div class="bubble" style="border-left: 3px solid var(--accent-purple);">🔄 Đã chuyển sang chế độ <b>Version ${ver}</b>. Hãy thử gửi lại câu hỏi để quan sát điểm khác biệt trong tool calls!</div>`;
+            chatContainer.appendChild(row);
+            scrollToBottom();
+        }
 
         function appendUserMessage(text) {
             const row = document.createElement('div');
@@ -631,7 +676,7 @@ HTML_CONTENT = """<!DOCTYPE html>
                         <div class="tool-card">
                             <div class="tool-header">
                                 <span class="tool-name-badge">🛠️ Tool Called: ${call.name}</span>
-                                <span style="font-size: 11px; color: #94a3b8;">Artifact: ${data.version || 'v3'}</span>
+                                <span style="font-size: 11px; color: #94a3b8;">Artifact Version: ${data.version || versionSelect.value}</span>
                             </div>
                             <div>
                                 <div class="tool-section-title">📥 Input Arguments</div>
@@ -655,6 +700,7 @@ HTML_CONTENT = """<!DOCTYPE html>
             const text = userInput.value.trim();
             if (!text) return;
 
+            const currentVer = versionSelect.value;
             appendUserMessage(text);
             userInput.value = '';
 
@@ -664,7 +710,7 @@ HTML_CONTENT = """<!DOCTYPE html>
                 const response = await fetch('/api/chat', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: text, history: chatHistory, version: 'v3' })
+                    body: JSON.stringify({ message: text, history: chatHistory, version: currentVer })
                 });
                 const data = await response.json();
                 appendAssistantMessage(data);
