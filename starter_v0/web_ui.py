@@ -757,11 +757,20 @@ HTML_CONTENT = """<!DOCTYPE html>
             scrollToBottom();
         }
 
+        function formatMarkdown(text) {
+            if (!text) return '';
+            let html = escapeHtml(text);
+            html = html.replace(/\*\*(.*?)\*\*/g, '<strong style="color: #38bdf8; font-weight: 600;">$1</strong>');
+            html = html.replace(/`([^`]+)`/g, '<code style="background:rgba(255,255,255,0.1);padding:2px 6px;border-radius:4px;font-family:monospace;color:#34d399;">$1</code>');
+            html = html.replace(/\n/g, '<br>');
+            return html;
+        }
+
         function appendAssistantMessage(data) {
             const row = document.createElement('div');
             row.className = 'message-row assistant';
             
-            let html = `<div class="bubble">${escapeHtml(data.reply)}</div>`;
+            let html = `<div class="bubble">${formatMarkdown(data.reply)}</div>`;
 
             if (data.tool_calls && data.tool_calls.length > 0) {
                 data.tool_calls.forEach((call, idx) => {
